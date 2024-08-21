@@ -18,10 +18,12 @@ const Login = async (req, res) => {
   const username = user.username;
   const networkId = user.networkId;
   const role = user.role;
+  console.log("ses id " + req.session.userId);
   res.status(200).json({ uuid, name, username, networkId, role });
 };
 
 const Me = async (req, res) => {
+  console.log("ses id --" + req.session.userId);
   if (!req.session.userId) {
     return res.status(401).json({ msg: "Please login to your account" });
   }
