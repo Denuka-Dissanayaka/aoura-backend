@@ -21,9 +21,9 @@ const store = new sessionStore({
   db: db,
 });
 
-// (async () => {
-//   await db.sync();
-// })();
+(async () => {
+  await db.sync();
+})();
 
 require("dotenv").config();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -56,7 +56,7 @@ app.use("/api/v1", AuthRoutes);
 app.use("/api/v1", NetworkRoutes);
 app.use("/api/v1", StaffRoutes);
 
-//store.sync();
+store.sync();
 
 const port = process.env.PORT || 5000;
 
