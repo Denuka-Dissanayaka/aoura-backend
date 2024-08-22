@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const Users = require("../models/UsersModel");
 
 const Login = async (req, res) => {
+  console.log("Session before setting userId:", req.session);
   const user = await Users.findOne({
     where: {
       username: req.body.username,
