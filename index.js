@@ -30,7 +30,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
   cors({
     //origin: ["https://aoura-demo.netlify.app"],
-    origin: "*",
+    origin: "http://localhost:5173",
     //methods: ["POST", "GET"],
     credentials: true,
   })
