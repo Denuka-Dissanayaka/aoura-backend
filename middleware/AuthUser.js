@@ -1,12 +1,12 @@
 const Users = require("../models/UsersModel");
 
 const verifyUser = async (req, res, next) => {
-  if (!req.session.userId) {
+  if (!req.user_Id) {
     return res.status(401).json({ msg: "Please login to your account" });
   }
   const user = await Users.findOne({
     where: {
-      uuid: req.session.userId,
+      uuid: req.user_Id,
     },
   });
   if (!user) return res.status(404).json({ msg: "User not found" });

@@ -10,7 +10,7 @@ const verifyJWT = (req, res, next) => {
       if (err) {
         return res.status(401).json({ msg: "invalid token" });
       } else {
-        req.userId = decoded.userId;
+        req.user_Id = decoded.userId;
         next();
       }
     });

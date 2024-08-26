@@ -30,7 +30,7 @@ const Login = async (req, res) => {
 
 const Me = async (req, res) => {
   //console.log("ses id -- ", req.session);
-  if (!req.userId) {
+  if (!req.user_Id) {
     return res.status(401).json({ msg: "Please login to your account" });
   }
   const user = await Users.findOne({
@@ -43,7 +43,7 @@ const Me = async (req, res) => {
       "role",
     ],
     where: {
-      uuid: req.userId,
+      uuid: req.user_Id,
     },
   });
   if (!user) return res.status(404).json({ msg: "User not found" });
