@@ -12,9 +12,9 @@ const verifyJWT = require("../middleware/verifyJWT.js");
 const router = express.Router();
 
 router.get("/products", verifyJWT, verifyUser, getProducts);
-router.get("/products/:id", verifyUser, getProductById);
+router.get("/products/:id", verifyJWT, verifyUser, getProductById);
 router.post("/products", verifyJWT, verifyUser, createProduct);
-router.patch("/products/:id", verifyUser, updateProduct);
-router.delete("/products/:id", verifyUser, deleteProduct);
+router.patch("/products/:id", verifyJWT, verifyUser, updateProduct);
+router.delete("/products/:id", verifyJWT, verifyUser, deleteProduct);
 
 module.exports = router;
