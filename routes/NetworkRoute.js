@@ -7,13 +7,14 @@ const {
   deleteNetwork,
 } = require("../controllers/NetworkController");
 const { verifyUser, adminOnly } = require("../middleware/AuthUser");
+const verifyJWT = require("../middleware/verifyJWT.js");
 
 const router = express.Router();
 
-router.get("/networks", verifyUser, adminOnly, getNetworks);
-router.get("/networks/:id", verifyUser, adminOnly, getNetworkById);
-router.post("/networks", verifyUser, adminOnly, createNetworks);
-router.patch("/networks/:id", verifyUser, adminOnly, updateNetwork);
-router.delete("/networks/:id", verifyUser, adminOnly, deleteNetwork);
+router.get("/networks", verifyJWT, verifyUser, adminOnly, getNetworks);
+router.get("/networks/:id", verifyJWT, verifyUser, adminOnly, getNetworkById);
+router.post("/networks", verifyJWT, verifyUser, adminOnly, createNetworks);
+router.patch("/networks/:id", verifyJWT, verifyUser, adminOnly, updateNetwork);
+router.delete("/networks/:id", verifyJWT, verifyUser, adminOnly, deleteNetwork);
 
 module.exports = router;
