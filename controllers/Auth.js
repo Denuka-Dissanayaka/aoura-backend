@@ -16,7 +16,7 @@ const Login = async (req, res) => {
     return res.status(400).json({ msg: "Incorrect Username or Password" });
   //req.session.userId = user.uuid;
   const token = jwt.sign({ userId: user.uuid }, "bdggewssdgfv", {
-    expiresIn: 300,
+    expiresIn: "1d",
   });
 
   const uuid = user.uuid;
