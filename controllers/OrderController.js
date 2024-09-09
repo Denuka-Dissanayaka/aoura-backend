@@ -113,17 +113,30 @@ const getOrderById = async (req, res) => {
 };
 
 const createOrder = async (req, res) => {
-  const { price, quantity, date, productId, customerId } = req.body;
+  const { price, quantity, date, productId, customerId, networkId } = req.body;
+
   try {
-    await Products.create({
-      price: price,
-      quantity: quantity,
-      date: date,
-      productId: productId,
-      customerId: customerId,
-      networkId: req.networkId,
-    });
-    res.status(201).json({ msg: "Order Created Successfuly" });
+    if (req.role === "admin") {
+      await Orders.create({
+        price: price,
+        quantity: quantity,
+        date: date,
+        productId: productId,
+        customerId: customerId,
+        networkId: networkId,
+      });
+      res.status(201).json({ msg: "Order Created Successfuly" });
+    } else {
+      await Orders.create({
+        price: price,
+        quantity: quantity,
+        date: date,
+        productId: productId,
+        customerId: customerId,
+        networkId: req.networkId,
+      });
+      res.status(201).json({ msg: "Order Created Successfuly" });
+    }
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }
@@ -165,38 +178,39 @@ const createOrder = async (req, res) => {
 //   }
 // };
 
-// const deleteProduct = async (req, res) => {
-//   try {
-//     const product = await Products.findOne({
-//       where: {
-//         uuid: req.params.id,
-//       },
-//     });
-//     if (!product) return res.status(404).json({ msg: "Data Not Found" });
+const deleteOrder = async (req, res) => {
+  try {
+    const order = await Orders.findOne({
+      where: {
+        uuid: req.params.id,
+      },
+    });
+    if (!order) return res.status(404).json({ msg: "Data Not Found" });
 
-//     if (req.role === "admin") {
-//       await Products.destroy({
-//         where: {
-//           id: product.id,
-//         },
-//       });
-//     } else {
-//       if (req.userId !== product.userId)
-//         return res.status(403).json({ msg: "Access Forbidden" });
-//       await Products.destroy({
-//         where: {
-//           [Op.and]: [{ id: product.id }, { userId: req.userId }],
-//         },
-//       });
-//     }
-//     res.status(200).json({ msg: "Product deleted successfuly" });
-//   } catch (error) {
-//     res.status(500).json({ msg: error.message });
-//   }
-// };
+    if (req.role === "admin") {
+      await Orders.destroy({
+        where: {
+          id: order.id,
+        },
+      });
+    } else {
+      if (req.networkId !== order.networkId)
+        return res.status(403).json({ msg: "Access Forbidden" });
+      await Orders.destroy({
+        where: {
+          [Op.and]: [{ id: order.id }, { networkId: req.networkId }],
+        },
+      });
+    }
+    res.status(200).json({ msg: "Order deleted successfuly" });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
 
 module.exports = {
   getOrders,
   getOrderById,
   createOrder,
+  deleteOrder,
 };

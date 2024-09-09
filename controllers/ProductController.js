@@ -24,7 +24,7 @@ const getProducts = async (req, res) => {
       response = await Products.findAll({
         attributes: ["uuid", "name", "quantity", "price"],
         where: {
-          userId: req.userId,
+          networkId: req.networkId,
         },
         include: [
           {
@@ -70,7 +70,7 @@ const getProductById = async (req, res) => {
       response = await Products.findOne({
         attributes: ["uuid", "name", "quantity", "price"],
         where: {
-          [Op.and]: [{ id: product.id }, { userId: req.userId }],
+          [Op.and]: [{ id: product.id }, { networkId: req.networkId }],
         },
         include: [
           {
@@ -165,13 +165,13 @@ const updateProduct = async (req, res) => {
         }
       );
     } else {
-      if (req.userId !== product.userId)
+      if (req.networkId !== product.networkId)
         return res.status(403).json({ msg: "Access Forbidden" });
       await Products.update(
         { name, price, quantity },
         {
           where: {
-            [Op.and]: [{ id: product.id }, { userId: req.userId }],
+            [Op.and]: [{ id: product.id }, { networkId: req.networkId }],
           },
         }
       );
@@ -198,11 +198,11 @@ const deleteProduct = async (req, res) => {
         },
       });
     } else {
-      if (req.userId !== product.userId)
+      if (req.networkId !== product.networkId)
         return res.status(403).json({ msg: "Access Forbidden" });
       await Products.destroy({
         where: {
-          [Op.and]: [{ id: product.id }, { userId: req.userId }],
+          [Op.and]: [{ id: product.id }, { networkId: req.networkId }],
         },
       });
     }
