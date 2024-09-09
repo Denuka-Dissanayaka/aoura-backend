@@ -86,6 +86,50 @@ const getProductById = async (req, res) => {
   }
 };
 
+const getProductByIdForPrice = async (req, res) => {
+  try {
+    const product = await Products.findOne({
+      where: {
+        id: req.params.productId,
+      },
+    });
+    if (!product) return res.status(404).json({ msg: "Data Not Found" });
+    let response;
+    if (req.role === "admin") {
+      response = await Products.findOne({
+        attributes: ["uuid", "name", "quantity", "price"],
+        where: {
+          id: product.id,
+        },
+      });
+    } else {
+      response = await Products.findOne({
+        attributes: ["uuid", "name", "quantity", "price"],
+        where: {
+          [Op.and]: [{ id: product.id }, { networkId: req.networkId }],
+        },
+      });
+    }
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
+
+const getProductsBasedOnNetwork = async (req, res) => {
+  try {
+    const response = await Products.findAll({
+      attributes: ["id", "uuid", "name"],
+      where: {
+        networkId: req.params.networkId,
+      },
+    });
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
+
 const createProduct = async (req, res) => {
   const { name, price, quantity } = req.body;
   try {
@@ -174,4 +218,6 @@ module.exports = {
   createProduct,
   updateProduct,
   deleteProduct,
+  getProductsBasedOnNetwork,
+  getProductByIdForPrice,
 };

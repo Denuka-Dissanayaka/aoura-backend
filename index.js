@@ -12,6 +12,8 @@ const UserRoutes = require("./routes/UserRoute");
 const AuthRoutes = require("./routes/AuthRoute");
 const NetworkRoutes = require("./routes/NetworkRoute");
 const StaffRoutes = require("./routes/StaffRoute");
+const CustomerRoutes = require("./routes/CustomersRoute");
+const OrderRoutes = require("./routes/OrderRoute");
 
 const app = express();
 
@@ -21,9 +23,9 @@ const store = new sessionStore({
   db: db,
 });
 
-// (async () => {
-//   await db.sync();
-// })();
+(async () => {
+  await db.sync();
+})();
 
 require("dotenv").config();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -57,6 +59,8 @@ app.use("/api/v1", UserRoutes);
 app.use("/api/v1", AuthRoutes);
 app.use("/api/v1", NetworkRoutes);
 app.use("/api/v1", StaffRoutes);
+app.use("/api/v1", CustomerRoutes);
+app.use("/api/v1", OrderRoutes);
 
 //store.sync();
 
