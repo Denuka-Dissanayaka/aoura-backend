@@ -11,7 +11,7 @@ const verifyJWT = require("../middleware/verifyJWT.js");
 
 const router = express.Router();
 
-router.get("/networks", verifyJWT, verifyUser, adminOnly, getNetworks);
+router.get("/networks", verifyJWT, verifyUser, getNetworks);
 router.get("/networks/:id", verifyJWT, verifyUser, adminOnly, getNetworkById);
 router.post("/networks", verifyJWT, verifyUser, adminOnly, createNetworks);
 router.patch("/networks/:id", verifyJWT, verifyUser, adminOnly, updateNetwork);
