@@ -94,17 +94,29 @@ const getCustomersBasedOnNetwork = async (req, res) => {
 };
 
 const createCustomer = async (req, res) => {
-  const { name, email, address, phone } = req.body;
+  const { name, email, address, phone, networkId } = req.body;
   try {
-    await Customers.create({
-      name: name,
-      email: email,
-      address: address,
-      phone: phone,
+    if (req.role === "admin") {
+      await Customers.create({
+        name: name,
+        email: email,
+        address: address,
+        phone: phone,
 
-      networkId: req.networkId,
-    });
-    res.status(201).json({ msg: "Customer Added Successfuly" });
+        networkId: networkId,
+      });
+      res.status(201).json({ msg: "Customer Added Successfuly" });
+    } else {
+      await Customers.create({
+        name: name,
+        email: email,
+        address: address,
+        phone: phone,
+
+        networkId: req.networkId,
+      });
+      res.status(201).json({ msg: "Customer Added Successfuly" });
+    }
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }
