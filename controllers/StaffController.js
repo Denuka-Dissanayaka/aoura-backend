@@ -30,32 +30,32 @@ const getStaffs = async (req, res) => {
   }
 };
 
-// const getUserById = async (req, res) => {
-//   try {
-//     const response = await Users.findOne({
-//       attributes: [
-//         "uuid",
-//         "fristname",
-//         "lastname",
-//         "username",
-//         "networkId",
-//         "role",
-//       ],
-//       include: [
-//         {
-//           model: Networks,
-//           attributes: ["uuid", "name"],
-//         },
-//       ],
-//       where: {
-//         uuid: req.params.id,
-//       },
-//     });
-//     res.status(200).json(response);
-//   } catch (err) {
-//     res.status(500).json({ msg: err.message });
-//   }
-// };
+const getStaffById = async (req, res) => {
+  try {
+    const response = await Staffs.findOne({
+      attributes: [
+        "uuid",
+        "fristname",
+        "lastname",
+        "nic",
+        "gender",
+        "networkId",
+      ],
+      include: [
+        {
+          model: Networks,
+          attributes: ["uuid", "name"],
+        },
+      ],
+      where: {
+        uuid: req.params.id,
+      },
+    });
+    res.status(200).json(response);
+  } catch (err) {
+    res.status(500).json({ msg: err.message });
+  }
+};
 
 const createStaff = async (req, res) => {
   const {
@@ -81,53 +81,34 @@ const createStaff = async (req, res) => {
   }
 };
 
-// const updateUser = async (req, res) => {
-//   const user = await Users.findOne({
-//     where: {
-//       uuid: req.params.id,
-//     },
-//   });
-//   if (!user) return res.status(404).json({ msg: "User not found" });
-//   const {
-//     fristName,
-//     lastName,
-//     userName,
-//     password,
-//     confPassword,
-//     networkId,
-//     role,
-//   } = req.body;
-//   let hashPassword;
-//   if (password === "" || password === null) {
-//     hashPassword = user.password;
-//   } else {
-//     hashPassword = await bcrypt.hash(password, 10);
-//   }
-//   if (password !== confPassword)
-//     return res
-//       .status(400)
-//       .json({ msg: "Password and confirm password does not matched" });
-//   try {
-//     await Users.update(
-//       {
-//         fristname: fristName,
-//         lastname: lastName,
-//         username: userName,
-//         password: hashPassword,
-//         networkId: networkId,
-//         role: role,
-//       },
-//       {
-//         where: {
-//           id: user.id,
-//         },
-//       }
-//     );
-//     res.status(200).json({ msg: "User Updated" });
-//   } catch (error) {
-//     res.status(400).json({ msg: error.message });
-//   }
-// };
+const updateStaff = async (req, res) => {
+  const staff = await Staffs.findOne({
+    where: {
+      uuid: req.params.id,
+    },
+  });
+  if (!staff) return res.status(404).json({ msg: "Staff not found" });
+  const { fristName, lastName, gender, nic } = req.body;
+
+  try {
+    await Staffs.update(
+      {
+        fristName: fristName,
+        lastName: lastName,
+        gender: gender,
+        nic: nic,
+      },
+      {
+        where: {
+          id: staff.id,
+        },
+      }
+    );
+    res.status(200).json({ msg: "Staff Member Updated" });
+  } catch (error) {
+    res.status(400).json({ msg: error.message });
+  }
+};
 
 const deleteStaff = async (req, res) => {
   const user = await Staffs.findOne({
@@ -150,8 +131,8 @@ const deleteStaff = async (req, res) => {
 
 module.exports = {
   getStaffs,
-  //getUserById,
+  getStaffById,
   createStaff,
-  //updateUser,
+  updateStaff,
   deleteStaff,
 };
