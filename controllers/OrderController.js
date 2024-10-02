@@ -142,41 +142,41 @@ const createOrder = async (req, res) => {
   }
 };
 
-// const updateProduct = async (req, res) => {
-//   try {
-//     const product = await Products.findOne({
-//       where: {
-//         uuid: req.params.id,
-//       },
-//     });
-//     if (!product) return res.status(404).json({ msg: "Data Not Found" });
-//     const { name, price, quantity } = req.body;
-//     if (req.role === "admin") {
-//       await Products.update(
-//         { name, price, quantity },
-//         {
-//           where: {
-//             id: product.id,
-//           },
-//         }
-//       );
-//     } else {
-//       if (req.userId !== product.userId)
-//         return res.status(403).json({ msg: "Access Forbidden" });
-//       await Products.update(
-//         { name, price, quantity },
-//         {
-//           where: {
-//             [Op.and]: [{ id: product.id }, { userId: req.userId }],
-//           },
-//         }
-//       );
-//     }
-//     res.status(200).json({ msg: "Product updated successfuly" });
-//   } catch (error) {
-//     res.status(500).json({ msg: error.message });
-//   }
-// };
+const updateOrder = async (req, res) => {
+  try {
+    const order = await Orders.findOne({
+      where: {
+        uuid: req.params.id,
+      },
+    });
+    if (!order) return res.status(404).json({ msg: "Data Not Found" });
+    const { price, quantity, status } = req.body;
+    if (req.role === "admin") {
+      await Orders.update(
+        { price, quantity, status },
+        {
+          where: {
+            id: order.id,
+          },
+        }
+      );
+    } else {
+      if (req.networkId !== order.networkId)
+        return res.status(403).json({ msg: "Access Forbidden" });
+      await Orders.update(
+        { price, quantity, status },
+        {
+          where: {
+            [Op.and]: [{ id: order.id }, { networkId: req.networkId }],
+          },
+        }
+      );
+    }
+    res.status(200).json({ msg: "Order updated successfuly" });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
 
 const deleteOrder = async (req, res) => {
   try {
@@ -212,5 +212,6 @@ module.exports = {
   getOrders,
   getOrderById,
   createOrder,
+  updateOrder,
   deleteOrder,
 };
