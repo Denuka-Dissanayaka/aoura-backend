@@ -82,10 +82,16 @@ const getCustomerById = async (req, res) => {
 const getCustomersBasedOnNetwork = async (req, res) => {
   try {
     const response = await Customers.findAll({
-      attributes: ["id", "uuid", "name"],
+      attributes: ["id", "uuid", "name", "email", "address", "phone"],
       where: {
         networkId: req.params.networkId,
       },
+      include: [
+        {
+          model: Networks,
+          attributes: ["uuid", "name"],
+        },
+      ],
     });
     res.status(200).json(response);
   } catch (error) {
