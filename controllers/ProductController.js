@@ -119,10 +119,20 @@ const getProductByIdForPrice = async (req, res) => {
 const getProductsBasedOnNetwork = async (req, res) => {
   try {
     const response = await Products.findAll({
-      attributes: ["id", "uuid", "name"],
+      attributes: ["id", "uuid", "name", "quantity", "price"],
       where: {
         networkId: req.params.networkId,
       },
+      include: [
+        {
+          model: Users,
+          attributes: ["fristname", "lastname"],
+        },
+        {
+          model: Networks,
+          attributes: ["uuid", "name"],
+        },
+      ],
     });
     res.status(200).json(response);
   } catch (error) {
