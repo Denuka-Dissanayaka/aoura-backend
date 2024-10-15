@@ -57,6 +57,33 @@ const getStaffById = async (req, res) => {
   }
 };
 
+const getStaffsBasedOnNetwork = async (req, res) => {
+  try {
+    const response = await Products.findAll({
+      attributes: [
+        "uuid",
+        "fristname",
+        "lastname",
+        "gender",
+        "networkId",
+        "nic",
+      ],
+      where: {
+        networkId: req.params.networkId,
+      },
+      include: [
+        {
+          model: Networks,
+          attributes: ["uuid", "name"],
+        },
+      ],
+    });
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
+
 const createStaff = async (req, res) => {
   const {
     fristName,
@@ -132,6 +159,7 @@ const deleteStaff = async (req, res) => {
 module.exports = {
   getStaffs,
   getStaffById,
+  getStaffsBasedOnNetwork,
   createStaff,
   updateStaff,
   deleteStaff,
