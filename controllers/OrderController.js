@@ -112,6 +112,34 @@ const getOrderById = async (req, res) => {
   }
 };
 
+const getOrdersBasedOnNetwork = async (req, res) => {
+  try {
+    const response = await Orders.findAll({
+      attributes: ["uuid", "status", "date", "quantity", "price"],
+      where: {
+        networkId: req.params.networkId,
+      },
+      include: [
+        {
+          model: Products,
+          attributes: ["uuid", "name"],
+        },
+        {
+          model: Networks,
+          attributes: ["uuid", "name"],
+        },
+        {
+          model: Customers,
+          attributes: ["uuid", "name", "email", "address", "phone"],
+        },
+      ],
+    });
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
+
 const createOrder = async (req, res) => {
   const { price, quantity, date, productId, customerId, networkId } = req.body;
 
@@ -211,6 +239,7 @@ const deleteOrder = async (req, res) => {
 module.exports = {
   getOrders,
   getOrderById,
+  getOrdersBasedOnNetwork,
   createOrder,
   updateOrder,
   deleteOrder,
