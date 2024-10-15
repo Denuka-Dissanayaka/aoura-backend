@@ -59,7 +59,7 @@ const getStaffById = async (req, res) => {
 
 const getStaffsBasedOnNetwork = async (req, res) => {
   try {
-    const response = await Products.findAll({
+    const response = await Staffs.findAll({
       attributes: [
         "uuid",
         "fristname",
