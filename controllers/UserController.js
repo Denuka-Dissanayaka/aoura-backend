@@ -57,6 +57,33 @@ const getUserById = async (req, res) => {
   }
 };
 
+const getUsersBasedOnNetwork = async (req, res) => {
+  try {
+    const response = await Users.findAll({
+      attributes: [
+        "uuid",
+        "fristname",
+        "lastname",
+        "username",
+        "networkId",
+        "role",
+      ],
+      where: {
+        networkId: req.params.networkId,
+      },
+      include: [
+        {
+          model: Networks,
+          attributes: ["uuid", "name"],
+        },
+      ],
+    });
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
+
 const createUser = async (req, res) => {
   const {
     fristName,
@@ -157,6 +184,7 @@ const deleteUser = async (req, res) => {
 module.exports = {
   getUsers,
   getUserById,
+  getUsersBasedOnNetwork,
   createUser,
   updateUser,
   deleteUser,
