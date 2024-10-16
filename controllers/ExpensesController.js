@@ -81,6 +81,26 @@ const getExpenseById = async (req, res) => {
   }
 };
 
+const getExpensesBasedOnNetwork = async (req, res) => {
+  try {
+    const response = await Expenses.findAll({
+      attributes: ["uuid", "type", "date", "value"],
+      where: {
+        networkId: req.params.networkId,
+      },
+      include: [
+        {
+          model: Networks,
+          attributes: ["uuid", "name"],
+        },
+      ],
+    });
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
+
 const createExpense = async (req, res) => {
   const { type, value, date, networkId } = req.body;
 
@@ -178,6 +198,7 @@ const deleteExpense = async (req, res) => {
 module.exports = {
   getExpenses,
   getExpenseById,
+  getExpensesBasedOnNetwork,
   createExpense,
   updateExpense,
   deleteExpense,
