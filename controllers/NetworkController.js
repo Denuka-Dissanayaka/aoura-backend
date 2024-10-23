@@ -14,7 +14,7 @@ const getNetworks = async (req, res) => {
 const getNetworkById = async (req, res) => {
   try {
     const response = await Networks.findOne({
-      attributes: ["uuid", "name"],
+      attributes: ["uuid", "name", "createdAt"],
       where: {
         uuid: req.params.id,
       },
