@@ -65,7 +65,14 @@ const getOrderById = async (req, res) => {
     let response;
     if (req.role === "admin") {
       response = await Orders.findOne({
-        attributes: ["uuid", "status", "date", "quantity", "price"],
+        attributes: [
+          "uuid",
+          "status",
+          "date",
+          "quantity",
+          "price",
+          "createdAt",
+        ],
         where: {
           id: order.id,
         },
@@ -86,7 +93,14 @@ const getOrderById = async (req, res) => {
       });
     } else {
       response = await Orders.findOne({
-        attributes: ["uuid", "status", "date", "quantity", "price"],
+        attributes: [
+          "uuid",
+          "status",
+          "date",
+          "quantity",
+          "price",
+          "createdAt",
+        ],
         where: {
           [Op.and]: [{ id: order.id }, { networkId: req.networkId }],
         },
