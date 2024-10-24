@@ -48,7 +48,7 @@ const getCustomerById = async (req, res) => {
     let response;
     if (req.role === "admin") {
       response = await Customers.findOne({
-        attributes: ["uuid", "name", "email", "address", "phone"],
+        attributes: ["uuid", "name", "email", "address", "phone", "createdAt"],
         where: {
           id: customer.id,
         },
@@ -61,7 +61,7 @@ const getCustomerById = async (req, res) => {
       });
     } else {
       response = await Customers.findOne({
-        attributes: ["uuid", "name", "email", "address", "phone"],
+        attributes: ["uuid", "name", "email", "address", "phone", "createdAt"],
         where: {
           [Op.and]: [{ id: customer.id }, { networkId: req.networkId }],
         },
