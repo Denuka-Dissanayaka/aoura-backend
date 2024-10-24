@@ -40,6 +40,7 @@ const getStaffById = async (req, res) => {
         "nic",
         "gender",
         "networkId",
+        "createdAt",
       ],
       include: [
         {
