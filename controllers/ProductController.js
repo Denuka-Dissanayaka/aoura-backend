@@ -8,7 +8,7 @@ const getProducts = async (req, res) => {
     let response;
     if (req.role === "admin") {
       response = await Products.findAll({
-        attributes: ["uuid", "name", "quantity", "price"],
+        attributes: ["uuid", "name", "quantity", "price", "type"],
         include: [
           {
             model: Users,
@@ -22,7 +22,7 @@ const getProducts = async (req, res) => {
       });
     } else {
       response = await Products.findAll({
-        attributes: ["uuid", "name", "quantity", "price"],
+        attributes: ["uuid", "name", "quantity", "price", "type"],
         where: {
           networkId: req.networkId,
         },
@@ -51,7 +51,7 @@ const getProductById = async (req, res) => {
     let response;
     if (req.role === "admin") {
       response = await Products.findOne({
-        attributes: ["uuid", "name", "quantity", "price"],
+        attributes: ["uuid", "name", "quantity", "price", "type"],
         where: {
           id: product.id,
         },
@@ -68,7 +68,7 @@ const getProductById = async (req, res) => {
       });
     } else {
       response = await Products.findOne({
-        attributes: ["uuid", "name", "quantity", "price"],
+        attributes: ["uuid", "name", "quantity", "price", "type"],
         where: {
           [Op.and]: [{ id: product.id }, { networkId: req.networkId }],
         },
@@ -97,14 +97,14 @@ const getProductByIdForPrice = async (req, res) => {
     let response;
     if (req.role === "admin") {
       response = await Products.findOne({
-        attributes: ["uuid", "name", "quantity", "price"],
+        attributes: ["uuid", "name", "quantity", "price", "type"],
         where: {
           id: product.id,
         },
       });
     } else {
       response = await Products.findOne({
-        attributes: ["uuid", "name", "quantity", "price"],
+        attributes: ["uuid", "name", "quantity", "price", "type"],
         where: {
           [Op.and]: [{ id: product.id }, { networkId: req.networkId }],
         },
@@ -119,7 +119,7 @@ const getProductByIdForPrice = async (req, res) => {
 const getProductsBasedOnNetwork = async (req, res) => {
   try {
     const response = await Products.findAll({
-      attributes: ["id", "uuid", "name", "quantity", "price"],
+      attributes: ["id", "uuid", "name", "quantity", "price", "type"],
       where: {
         networkId: req.params.networkId,
       },
