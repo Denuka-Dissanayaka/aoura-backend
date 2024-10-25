@@ -24,6 +24,14 @@ const Products = db.define(
         len: [3, 100],
       },
     },
+    type: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: "product",
+      validate: {
+        notEmpty: true,
+      },
+    },
     quantity: {
       type: DataTypes.INTEGER,
       allowNull: true,

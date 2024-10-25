@@ -141,26 +141,28 @@ const getProductsBasedOnNetwork = async (req, res) => {
 };
 
 const createProduct = async (req, res) => {
-  const { name, price, quantity, networkId } = req.body;
+  const { name, price, quantity, networkId, type } = req.body;
   try {
     if (req.role === "admin") {
       await Products.create({
         name: name,
         price: price,
         quantity: quantity,
+        type: type,
         userId: req.userId,
         networkId: networkId,
       });
-      res.status(201).json({ msg: "Product Created Successfuly" });
+      res.status(201).json({ msg: "Product or Package Created Successfuly" });
     } else {
       await Products.create({
         name: name,
         price: price,
         quantity: quantity,
+        type: type,
         userId: req.userId,
         networkId: req.networkId,
       });
-      res.status(201).json({ msg: "Product Created Successfuly" });
+      res.status(201).json({ msg: "Product or Package Created Successfuly" });
     }
   } catch (error) {
     res.status(500).json({ msg: error.message });
