@@ -21,6 +21,14 @@ const Networks = db.define(
         notEmpty: true,
       },
     },
+    type: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: "physical",
+      validate: {
+        notEmpty: true,
+      },
+    },
   },
   {
     freezeTableName: true,

@@ -26,11 +26,12 @@ const getNetworkById = async (req, res) => {
 };
 
 const createNetworks = async (req, res) => {
-  const { networkName } = req.body;
+  const { networkName, type } = req.body;
 
   try {
     await Networks.create({
       name: networkName,
+      type: type,
     });
     return res.status(201).json({ msg: "Success" });
   } catch (err) {
