@@ -7,9 +7,17 @@ function encrypt(password) {
 }
 
 const getStaffs = async (req, res) => {
+  const page = parseInt(req.query.page) || 0;
+  const limit = parseInt(req.query.limit) || 8;
   try {
+    let totalRows;
+    let totalPage;
+    totalRows = await Staffs.count();
+    totalPage = Math.ceil(totalRows / limit);
+
     const response = await Staffs.findAll({
       attributes: [
+        "id",
         "uuid",
         "fristname",
         "lastname",
@@ -23,8 +31,17 @@ const getStaffs = async (req, res) => {
           attributes: ["uuid", "name"],
         },
       ],
+      offset: offset,
+      limit: limit,
+      order: [["id", "DESC"]],
     });
-    res.status(200).json(response);
+    res.status(200).json({
+      response,
+      page: page,
+      limit: limit,
+      totalRows: totalRows,
+      totalPage: totalPage,
+    });
   } catch (err) {
     res.status(500).json({ msg: err.message });
   }
