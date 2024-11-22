@@ -4,11 +4,20 @@ const Networks = require("../models/NetworkModule");
 const { Op } = require("sequelize");
 
 const getProducts = async (req, res) => {
+  const page = parseInt(req.query.page) || 0;
+  const limit = parseInt(req.query.limit) || 8;
+  //const search = req.query.search_query || "";
+  const offset = limit * page;
   try {
     let response;
+    let totalRows;
+    let totalPage;
     if (req.role === "admin") {
+      totalRows = await Products.count();
+      totalPage = Math.ceil(totalRows / limit);
+
       response = await Products.findAll({
-        attributes: ["uuid", "name", "quantity", "price", "type"],
+        attributes: ["uuid", "name", "quantity", "price", "type", "id"],
         include: [
           {
             model: Users,
@@ -19,10 +28,13 @@ const getProducts = async (req, res) => {
             attributes: ["uuid", "name"],
           },
         ],
+        offset: offset,
+        limit: limit,
+        order: [["id", "DESC"]],
       });
     } else {
       response = await Products.findAll({
-        attributes: ["uuid", "name", "quantity", "price", "type"],
+        attributes: ["uuid", "name", "quantity", "price", "type", "id"],
         where: {
           networkId: req.networkId,
         },
@@ -34,7 +46,13 @@ const getProducts = async (req, res) => {
         ],
       });
     }
-    res.status(200).json(response);
+    res.status(200).json({
+      response,
+      page: page,
+      limit: limit,
+      totalRows: totalRows,
+      totalPage: totalPage,
+    });
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }
