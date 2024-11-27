@@ -83,7 +83,11 @@ const getStaffsBasedOnNetwork = async (req, res) => {
   try {
     let totalRows;
     let totalPage;
-    totalRows = await Staffs.count();
+    totalRows = await Staffs.count({
+      where: {
+        networkId: req.params.networkId,
+      },
+    });
     totalPage = Math.ceil(totalRows / limit);
 
     const response = await Staffs.findAll({
