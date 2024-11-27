@@ -77,9 +77,18 @@ const getStaffById = async (req, res) => {
 };
 
 const getStaffsBasedOnNetwork = async (req, res) => {
+  const page = parseInt(req.query.page) || 0;
+  const limit = parseInt(req.query.limit) || 8;
+  const offset = limit * page;
   try {
+    let totalRows;
+    let totalPage;
+    totalRows = await Staffs.count();
+    totalPage = Math.ceil(totalRows / limit);
+
     const response = await Staffs.findAll({
       attributes: [
+        "id",
         "uuid",
         "fristname",
         "lastname",
@@ -96,8 +105,17 @@ const getStaffsBasedOnNetwork = async (req, res) => {
           attributes: ["uuid", "name"],
         },
       ],
+      offset: offset,
+      limit: limit,
+      order: [["id", "DESC"]],
     });
-    res.status(200).json(response);
+    res.status(200).json({
+      response,
+      page: page,
+      limit: limit,
+      totalRows: totalRows,
+      totalPage: totalPage,
+    });
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }
