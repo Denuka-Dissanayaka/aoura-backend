@@ -18,7 +18,7 @@ const getNetworks2 = async (req, res) => {
   try {
     let totalRows;
     let totalPage;
-    totalRows = await Staffs.count();
+    totalRows = await Networks.count();
     totalPage = Math.ceil(totalRows / limit);
 
     const response = await Networks.findAll({
