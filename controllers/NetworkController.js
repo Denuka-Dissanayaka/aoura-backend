@@ -11,6 +11,34 @@ const getNetworks = async (req, res) => {
   }
 };
 
+const getNetworks2 = async (req, res) => {
+  const page = parseInt(req.query.page) || 0;
+  const limit = parseInt(req.query.limit) || 8;
+  const offset = limit * page;
+  try {
+    let totalRows;
+    let totalPage;
+    totalRows = await Staffs.count();
+    totalPage = Math.ceil(totalRows / limit);
+
+    const response = await Networks.findAll({
+      attributes: ["id", "uuid", "name"],
+      offset: offset,
+      limit: limit,
+      order: [["id", "DESC"]],
+    });
+    res.status(200).json({
+      response,
+      page: page,
+      limit: limit,
+      totalRows: totalRows,
+      totalPage: totalPage,
+    });
+  } catch (err) {
+    res.status(500).json({ msg: err.message });
+  }
+};
+
 const getNetworkById = async (req, res) => {
   try {
     const response = await Networks.findOne({
@@ -86,6 +114,7 @@ const deleteNetwork = async (req, res) => {
 
 module.exports = {
   getNetworks,
+  getNetworks2,
   getNetworkById,
   createNetworks,
   updateNetwork,
