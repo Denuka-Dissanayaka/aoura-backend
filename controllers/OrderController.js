@@ -6,11 +6,20 @@ const Orders = require("../models/OrderModule");
 const { Op } = require("sequelize");
 
 const getOrders = async (req, res) => {
+  const page = parseInt(req.query.page) || 0;
+  const limit = parseInt(req.query.limit) || 8;
+
+  const offset = limit * page;
   try {
     let response;
+    let totalRows;
+    let totalPage;
     if (req.role === "admin") {
+      totalRows = await Orders.count();
+      totalPage = Math.ceil(totalRows / limit);
+
       response = await Orders.findAll({
-        attributes: ["uuid", "status", "date", "quantity", "price"],
+        attributes: ["id", "uuid", "status", "date", "quantity", "price"],
         include: [
           {
             model: Products,
@@ -25,10 +34,13 @@ const getOrders = async (req, res) => {
             attributes: ["uuid", "name", "email", "address", "phone"],
           },
         ],
+        offset: offset,
+        limit: limit,
+        order: [["id", "DESC"]],
       });
     } else {
       response = await Orders.findAll({
-        attributes: ["uuid", "status", "date", "quantity", "price"],
+        attributes: ["id", "uuid", "status", "date", "quantity", "price"],
         where: {
           networkId: req.networkId,
         },
@@ -48,7 +60,13 @@ const getOrders = async (req, res) => {
         ],
       });
     }
-    res.status(200).json(response);
+    res.status(200).json({
+      response,
+      page: page,
+      limit: limit,
+      totalRows: totalRows,
+      totalPage: totalPage,
+    });
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }
