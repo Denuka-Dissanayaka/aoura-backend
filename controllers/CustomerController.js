@@ -5,21 +5,34 @@ const Networks = require("../models/NetworkModule");
 const { Op } = require("sequelize");
 
 const getCustomers = async (req, res) => {
+  const page = parseInt(req.query.page) || 0;
+  const limit = parseInt(req.query.limit) || 8;
+  const offset = limit * page;
+
   try {
     let response;
+    let totalRows;
+    let totalPage;
+
     if (req.role === "admin") {
+      totalRows = await Customers.count();
+      totalPage = Math.ceil(totalRows / limit);
+
       response = await Customers.findAll({
-        attributes: ["uuid", "name", "email", "address", "phone"],
+        attributes: ["id", "uuid", "name", "email", "address", "phone"],
         include: [
           {
             model: Networks,
             attributes: ["uuid", "name"],
           },
         ],
+        offset: offset,
+        limit: limit,
+        order: [["id", "DESC"]],
       });
     } else {
       response = await Customers.findAll({
-        attributes: ["uuid", "name", "email", "address", "phone"],
+        attributes: ["id", "uuid", "name", "email", "address", "phone"],
         where: {
           networkId: req.networkId,
         },
@@ -31,7 +44,13 @@ const getCustomers = async (req, res) => {
         ],
       });
     }
-    res.status(200).json(response);
+    res.status(200).json({
+      response,
+      page: page,
+      limit: limit,
+      totalRows: totalRows,
+      totalPage: totalPage,
+    });
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }
