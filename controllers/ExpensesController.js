@@ -17,7 +17,7 @@ const getExpenses = async (req, res) => {
     let totalPage;
 
     if (req.role === "admin") {
-      totalRows = await Orders.count();
+      totalRows = await Expenses.count();
       totalPage = Math.ceil(totalRows / limit);
 
       response = await Expenses.findAll({
