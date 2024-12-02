@@ -72,6 +72,18 @@ const getOrders = async (req, res) => {
   }
 };
 
+const getOrdersCount = async (req, res) => {
+  let response;
+  if (req.role === "admin") {
+    response = await Orders.count();
+  } else {
+    response = 0;
+  }
+  res.status(200).json({
+    response,
+  });
+};
+
 const getOrderById = async (req, res) => {
   try {
     const order = await Orders.findOne({
@@ -275,4 +287,5 @@ module.exports = {
   createOrder,
   updateOrder,
   deleteOrder,
+  getOrdersCount,
 };
