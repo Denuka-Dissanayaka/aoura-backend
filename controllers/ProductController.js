@@ -58,6 +58,18 @@ const getProducts = async (req, res) => {
   }
 };
 
+const getProductsCount = async (req, res) => {
+  let response;
+  if (req.role === "admin") {
+    response = await Products.count();
+  } else {
+    response = 0;
+  }
+  res.status(200).json({
+    response,
+  });
+};
+
 const getProductById = async (req, res) => {
   try {
     const product = await Products.findOne({
@@ -261,4 +273,5 @@ module.exports = {
   deleteProduct,
   getProductsBasedOnNetwork,
   getProductByIdForPrice,
+  getProductsCount,
 };

@@ -1,6 +1,7 @@
 const express = require("express");
 const {
   getCustomers,
+  getCustomersCount,
   getCustomerById,
   createCustomer,
   updateCustomer,
@@ -13,6 +14,7 @@ const verifyJWT = require("../middleware/verifyJWT.js");
 const router = express.Router();
 
 router.get("/customers", verifyJWT, verifyUser, getCustomers);
+router.get("/customers/count", verifyJWT, verifyUser, getCustomersCount);
 router.get("/customers/:id", verifyJWT, verifyUser, getCustomerById);
 router.get(
   "/customers/base-on-network/:networkId",

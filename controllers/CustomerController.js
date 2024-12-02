@@ -56,6 +56,18 @@ const getCustomers = async (req, res) => {
   }
 };
 
+const getCustomersCount = async (req, res) => {
+  let response;
+  if (req.role === "admin") {
+    response = await Customers.count();
+  } else {
+    response = 0;
+  }
+  res.status(200).json({
+    response,
+  });
+};
+
 const getCustomerById = async (req, res) => {
   try {
     const customer = await Customers.findOne({
@@ -220,4 +232,5 @@ module.exports = {
   updateCustomer,
   deleteCustomer,
   getCustomersBasedOnNetwork,
+  getCustomersCount,
 };

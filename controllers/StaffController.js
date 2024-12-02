@@ -48,6 +48,18 @@ const getStaffs = async (req, res) => {
   }
 };
 
+const getStaffsCount = async (req, res) => {
+  let response;
+  if (req.role === "admin") {
+    response = await Staffs.count();
+  } else {
+    response = 0;
+  }
+  res.status(200).json({
+    response,
+  });
+};
+
 const getStaffById = async (req, res) => {
   try {
     const response = await Staffs.findOne({
@@ -204,4 +216,5 @@ module.exports = {
   createStaff,
   updateStaff,
   deleteStaff,
+  getStaffsCount,
 };

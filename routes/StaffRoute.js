@@ -1,6 +1,7 @@
 const express = require("express");
 const {
   getStaffs,
+  getStaffsCount,
   getStaffById,
   getStaffsBasedOnNetwork,
   createStaff,
@@ -13,6 +14,7 @@ const verifyJWT = require("../middleware/verifyJWT.js");
 const router = express.Router();
 
 router.get("/staffs", verifyJWT, verifyUser, adminOnly, getStaffs);
+router.get("/staffs/count", verifyJWT, verifyUser, adminOnly, getStaffsCount);
 router.get("/staffs/:id", verifyJWT, verifyUser, adminOnly, getStaffById);
 router.get(
   "/staffs/base-on-network/:networkId",
