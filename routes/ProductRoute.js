@@ -7,6 +7,7 @@ const {
   updateProduct,
   deleteProduct,
   getProductsBasedOnNetwork,
+  getProductsBasedOnNetwork2,
   getProductByIdForPrice,
 } = require("../controllers/ProductController.js");
 const { verifyUser, adminOnly } = require("../middleware/AuthUser");
@@ -22,6 +23,13 @@ router.get(
   verifyJWT,
   verifyUser,
   getProductsBasedOnNetwork
+);
+router.get(
+  "/products/base-on-network2/:networkId",
+  verifyJWT,
+  verifyUser,
+  adminOnly,
+  getProductsBasedOnNetwork2
 );
 router.get(
   "/products/get-price/:productId",
