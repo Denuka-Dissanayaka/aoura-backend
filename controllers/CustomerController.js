@@ -162,6 +162,9 @@ const getCustomersBasedOnNetwork2 = async (req, res) => {
           attributes: ["uuid", "name"],
         },
       ],
+      offset: offset,
+      limit: limit,
+      order: [["id", "DESC"]],
     });
     res.status(200).json({
       response,
