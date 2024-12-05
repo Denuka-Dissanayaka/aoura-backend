@@ -7,6 +7,7 @@ const {
   updateCustomer,
   deleteCustomer,
   getCustomersBasedOnNetwork,
+  getCustomersBasedOnNetwork2,
 } = require("../controllers/CustomerController.js");
 const { verifyUser, adminOnly } = require("../middleware/AuthUser");
 const verifyJWT = require("../middleware/verifyJWT.js");
@@ -21,6 +22,13 @@ router.get(
   verifyJWT,
   verifyUser,
   getCustomersBasedOnNetwork
+);
+router.get(
+  "/customers/base-on-network2/:networkId",
+  verifyJWT,
+  verifyUser,
+  adminOnly,
+  getCustomersBasedOnNetwork2
 );
 router.post("/customers", verifyJWT, verifyUser, createCustomer);
 router.patch("/customers/:id", verifyJWT, verifyUser, updateCustomer);

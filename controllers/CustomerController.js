@@ -31,6 +31,13 @@ const getCustomers = async (req, res) => {
         order: [["id", "DESC"]],
       });
     } else {
+      totalRows = await Customers.count({
+        where: {
+          networkId: req.networkId,
+        },
+      });
+      totalPage = Math.ceil(totalRows / limit);
+
       response = await Customers.findAll({
         attributes: ["id", "uuid", "name", "email", "address", "phone"],
         where: {
@@ -125,6 +132,44 @@ const getCustomersBasedOnNetwork = async (req, res) => {
       ],
     });
     res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
+const getCustomersBasedOnNetwork2 = async (req, res) => {
+  const page = parseInt(req.query.page) || 0;
+  const limit = parseInt(req.query.limit) || 8;
+  const offset = limit * page;
+
+  try {
+    let totalRows;
+    let totalPage;
+    totalRows = await Customers.count({
+      where: {
+        networkId: req.params.networkId,
+      },
+    });
+    totalPage = Math.ceil(totalRows / limit);
+
+    const response = await Customers.findAll({
+      attributes: ["id", "uuid", "name", "email", "address", "phone"],
+      where: {
+        networkId: req.params.networkId,
+      },
+      include: [
+        {
+          model: Networks,
+          attributes: ["uuid", "name"],
+        },
+      ],
+    });
+    res.status(200).json({
+      response,
+      page: page,
+      limit: limit,
+      totalRows: totalRows,
+      totalPage: totalPage,
+    });
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }
@@ -232,5 +277,6 @@ module.exports = {
   updateCustomer,
   deleteCustomer,
   getCustomersBasedOnNetwork,
+  getCustomersBasedOnNetwork2,
   getCustomersCount,
 };
