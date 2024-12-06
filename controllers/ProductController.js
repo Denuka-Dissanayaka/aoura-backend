@@ -172,13 +172,26 @@ const getProductsBasedOnNetwork = async (req, res) => {
 const getProductsBasedOnNetwork2 = async (req, res) => {
   const page = parseInt(req.query.page) || 0;
   const limit = parseInt(req.query.limit) || 8;
+  const searchByName = req.query.search_by_name || "";
   const offset = limit * page;
   try {
     let totalRows;
     let totalPage;
     totalRows = await Products.count({
       where: {
-        networkId: req.params.networkId,
+        [Op.or]: [
+          {
+            name: {
+              [Op.like]: "%" + searchByName + "%",
+            },
+          },
+          {
+            networkId: {
+              [Op.like]: "%" + req.params.networkId + "%",
+            },
+          },
+        ],
+        //networkId: req.params.networkId,
       },
     });
     totalPage = Math.ceil(totalRows / limit);
@@ -186,7 +199,19 @@ const getProductsBasedOnNetwork2 = async (req, res) => {
     const response = await Products.findAll({
       attributes: ["id", "uuid", "name", "quantity", "price", "type"],
       where: {
-        networkId: req.params.networkId,
+        [Op.or]: [
+          {
+            name: {
+              [Op.like]: "%" + searchByName + "%",
+            },
+          },
+          {
+            networkId: {
+              [Op.like]: "%" + req.params.networkId + "%",
+            },
+          },
+        ],
+        //networkId: req.params.networkId,
       },
       include: [
         {
