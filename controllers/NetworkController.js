@@ -1,4 +1,5 @@
 const Networks = require("../models/NetworkModule");
+const { Op } = require("sequelize");
 
 const getNetworks = async (req, res) => {
   try {
@@ -14,15 +15,35 @@ const getNetworks = async (req, res) => {
 const getNetworks2 = async (req, res) => {
   const page = parseInt(req.query.page) || 0;
   const limit = parseInt(req.query.limit) || 8;
+  const searchByName = req.query.search_by_name || "";
   const offset = limit * page;
   try {
     let totalRows;
     let totalPage;
-    totalRows = await Networks.count();
+    totalRows = await Networks.count({
+      where: {
+        [Op.or]: [
+          {
+            name: {
+              [Op.like]: "%" + searchByName + "%",
+            },
+          },
+        ],
+      },
+    });
     totalPage = Math.ceil(totalRows / limit);
 
     const response = await Networks.findAll({
       attributes: ["id", "uuid", "name"],
+      where: {
+        [Op.or]: [
+          {
+            name: {
+              [Op.like]: "%" + searchByName + "%",
+            },
+          },
+        ],
+      },
       offset: offset,
       limit: limit,
       order: [["id", "DESC"]],
