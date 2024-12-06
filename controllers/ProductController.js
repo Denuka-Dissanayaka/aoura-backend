@@ -175,6 +175,7 @@ const getProductsBasedOnNetwork2 = async (req, res) => {
   const searchByName = req.query.search_by_name || "";
   //const networkId = parseInt(req.query.networkId) || "";
   const offset = limit * page;
+  console.log(req.params.networkId);
   try {
     let totalRows;
     let totalPage;
