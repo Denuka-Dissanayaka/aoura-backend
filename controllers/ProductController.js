@@ -177,38 +177,50 @@ const getProductsBasedOnNetwork2 = async (req, res) => {
   try {
     let totalRows;
     let totalPage;
+    const whereClause = {};
+
+    if (searchByName) {
+      whereClause.name = { [Op.like]: "%" + searchByName + "%" };
+    }
+    if (req.params.networkId) {
+      whereClause.networkId = req.params.networkId;
+    }
+
     totalRows = await Products.count({
-      where: {
-        [Op.and]: [
-          {
-            name: {
-              [Op.like]: "%" + searchByName + "%",
-            },
-          },
-          {
-            networkId: req.params.networkId,
-          },
-        ],
-        //networkId: req.params.networkId,
-      },
+      where: whereClause,
+      // where: {
+
+      //   [Op.and]: [
+      //     {
+      //       name: {
+      //         [Op.like]: "%" + searchByName + "%",
+      //       },
+      //     },
+      //     {
+      //       networkId: req.params.networkId,
+      //     },
+      //   ],
+      //   //networkId: req.params.networkId,
+      // },
     });
     totalPage = Math.ceil(totalRows / limit);
 
     const response = await Products.findAll({
       attributes: ["id", "uuid", "name", "quantity", "price", "type"],
-      where: {
-        [Op.and]: [
-          {
-            name: {
-              [Op.like]: "%" + searchByName + "%",
-            },
-          },
-          {
-            networkId: req.params.networkId,
-          },
-        ],
-        //networkId: req.params.networkId,
-      },
+      where: whereClause,
+      // where: {
+      //   [Op.and]: [
+      //     {
+      //       name: {
+      //         [Op.like]: "%" + searchByName + "%",
+      //       },
+      //     },
+      //     {
+      //       networkId: req.params.networkId,
+      //     },
+      //   ],
+      //   //networkId: req.params.networkId,
+      // },
       include: [
         {
           model: Users,
