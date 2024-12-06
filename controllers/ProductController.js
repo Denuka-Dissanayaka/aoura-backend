@@ -173,59 +173,53 @@ const getProductsBasedOnNetwork2 = async (req, res) => {
   const page = parseInt(req.query.page) || 0;
   const limit = parseInt(req.query.limit) || 8;
   const searchByName = req.query.search_by_name || "";
-  const networkId = parseInt(req.query.networkId) || "";
+  //const networkId = parseInt(req.query.networkId) || "";
   const offset = limit * page;
   try {
     let totalRows;
     let totalPage;
     const whereClause = {};
 
-    if (searchByName) {
-      whereClause.name = { [Op.like]: "%" + searchByName + "%" };
-    }
-    if (networkId) {
-      whereClause.networkId = networkId;
-    }
+    // if (searchByName) {
+    //   whereClause.name = { [Op.like]: "%" + searchByName + "%" };
+    // }
+    // if (networkId) {
+    //   whereClause.networkId = networkId;
+    // }
 
     totalRows = await Products.count({
       where: {
-        networkId: networkId,
+        [Op.and]: [
+          {
+            name: {
+              [Op.like]: "%" + searchByName + "%",
+            },
+          },
+          {
+            networkId: req.params.networkId,
+          },
+        ],
+        //networkId: req.params.networkId,
       },
-      // where: {
-
-      //   [Op.and]: [
-      //     {
-      //       name: {
-      //         [Op.like]: "%" + searchByName + "%",
-      //       },
-      //     },
-      //     {
-      //       networkId: req.params.networkId,
-      //     },
-      //   ],
-      //   //networkId: req.params.networkId,
-      // },
     });
     totalPage = Math.ceil(totalRows / limit);
 
     const response = await Products.findAll({
       attributes: ["id", "uuid", "name", "quantity", "price", "type"],
+
       where: {
-        networkId: networkId,
+        [Op.and]: [
+          {
+            name: {
+              [Op.like]: "%" + searchByName + "%",
+            },
+          },
+          {
+            networkId: req.params.networkId,
+          },
+        ],
+        //networkId: req.params.networkId,
       },
-      // where: {
-      //   [Op.and]: [
-      //     {
-      //       name: {
-      //         [Op.like]: "%" + searchByName + "%",
-      //       },
-      //     },
-      //     {
-      //       networkId: req.params.networkId,
-      //     },
-      //   ],
-      //   //networkId: req.params.networkId,
-      // },
       include: [
         {
           model: Users,
