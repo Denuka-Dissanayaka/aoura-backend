@@ -186,9 +186,7 @@ const getProductsBasedOnNetwork2 = async (req, res) => {
             },
           },
           {
-            networkId: {
-              [Op.like]: "%" + req.params.networkId + "%",
-            },
+            networkId: req.params.networkId,
           },
         ],
         //networkId: req.params.networkId,
@@ -206,9 +204,7 @@ const getProductsBasedOnNetwork2 = async (req, res) => {
             },
           },
           {
-            networkId: {
-              [Op.like]: "%" + req.params.networkId + "%",
-            },
+            networkId: req.params.networkId,
           },
         ],
         //networkId: req.params.networkId,
