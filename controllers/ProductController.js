@@ -179,7 +179,7 @@ const getProductsBasedOnNetwork2 = async (req, res) => {
     let totalPage;
     totalRows = await Products.count({
       where: {
-        [Op.or]: [
+        [Op.and]: [
           {
             name: {
               [Op.like]: "%" + searchByName + "%",
@@ -197,7 +197,7 @@ const getProductsBasedOnNetwork2 = async (req, res) => {
     const response = await Products.findAll({
       attributes: ["id", "uuid", "name", "quantity", "price", "type"],
       where: {
-        [Op.or]: [
+        [Op.and]: [
           {
             name: {
               [Op.like]: "%" + searchByName + "%",
