@@ -25,7 +25,7 @@ router.get(
   getProductsBasedOnNetwork
 );
 router.get(
-  "/products/base-on-network2/:networkId",
+  "/products/base-on-network2",
   verifyJWT,
   verifyUser,
   adminOnly,
