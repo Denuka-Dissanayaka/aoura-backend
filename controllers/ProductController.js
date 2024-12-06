@@ -188,7 +188,9 @@ const getProductsBasedOnNetwork2 = async (req, res) => {
     }
 
     totalRows = await Products.count({
-      where: whereClause,
+      where: {
+        networkId: networkId,
+      },
       // where: {
 
       //   [Op.and]: [
@@ -208,7 +210,9 @@ const getProductsBasedOnNetwork2 = async (req, res) => {
 
     const response = await Products.findAll({
       attributes: ["id", "uuid", "name", "quantity", "price", "type"],
-      where: whereClause,
+      where: {
+        networkId: networkId,
+      },
       // where: {
       //   [Op.and]: [
       //     {
