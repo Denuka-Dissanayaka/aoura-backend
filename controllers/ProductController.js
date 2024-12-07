@@ -175,11 +175,12 @@ const getProductsBasedOnNetwork2 = async (req, res) => {
   const searchByName = req.query.search_by_name || "";
   //const networkId = parseInt(req.query.networkId) || "";
   const offset = limit * page;
-  console.log(req.params.networkId);
+  //console.log(req.params.networkId);
   try {
     let totalRows;
     let totalPage;
-    const whereClause = {};
+    let response;
+    //const whereClause = {};
 
     // if (searchByName) {
     //   whereClause.name = { [Op.like]: "%" + searchByName + "%" };
@@ -187,54 +188,104 @@ const getProductsBasedOnNetwork2 = async (req, res) => {
     // if (networkId) {
     //   whereClause.networkId = networkId;
     // }
-
-    totalRows = await Products.count({
-      where: {
-        [Op.and]: [
-          {
-            name: {
-              [Op.like]: "%" + searchByName + "%",
+    if (req.role === "admin") {
+      totalRows = await Products.count({
+        where: {
+          [Op.and]: [
+            {
+              name: {
+                [Op.like]: "%" + searchByName + "%",
+              },
             },
+            {
+              networkId: req.params.networkId,
+            },
+          ],
+          //networkId: req.params.networkId,
+        },
+      });
+      totalPage = Math.ceil(totalRows / limit);
+
+      response = await Products.findAll({
+        attributes: ["id", "uuid", "name", "quantity", "price", "type"],
+
+        where: {
+          [Op.and]: [
+            {
+              name: {
+                [Op.like]: "%" + searchByName + "%",
+              },
+            },
+            {
+              networkId: req.params.networkId,
+            },
+          ],
+          //networkId: req.params.networkId,
+        },
+        include: [
+          {
+            model: Users,
+            attributes: ["fristname", "lastname"],
           },
           {
-            networkId: req.params.networkId,
+            model: Networks,
+            attributes: ["uuid", "name"],
           },
         ],
-        //networkId: req.params.networkId,
-      },
-    });
-    totalPage = Math.ceil(totalRows / limit);
-
-    const response = await Products.findAll({
-      attributes: ["id", "uuid", "name", "quantity", "price", "type"],
-
-      where: {
-        [Op.and]: [
-          {
-            name: {
-              [Op.like]: "%" + searchByName + "%",
+        offset: offset,
+        limit: limit,
+        order: [["id", "DESC"]],
+      });
+    } else {
+      totalRows = await Products.count({
+        where: {
+          [Op.and]: [
+            {
+              name: {
+                [Op.like]: "%" + searchByName + "%",
+              },
             },
+            {
+              networkId: req.networkId,
+            },
+          ],
+          //networkId: req.params.networkId,
+        },
+      });
+      totalPage = Math.ceil(totalRows / limit);
+
+      response = await Products.findAll({
+        attributes: ["id", "uuid", "name", "quantity", "price", "type"],
+
+        where: {
+          [Op.and]: [
+            {
+              name: {
+                [Op.like]: "%" + searchByName + "%",
+              },
+            },
+            {
+              networkId: req.networkId,
+            },
+          ],
+          //networkId: req.params.networkId,
+        },
+        include: [
+          {
+            model: Users,
+            attributes: ["fristname", "lastname"],
           },
           {
-            networkId: req.params.networkId,
+            model: Networks,
+            attributes: ["uuid", "name"],
           },
         ],
-        //networkId: req.params.networkId,
-      },
-      include: [
-        {
-          model: Users,
-          attributes: ["fristname", "lastname"],
-        },
-        {
-          model: Networks,
-          attributes: ["uuid", "name"],
-        },
-      ],
-      offset: offset,
-      limit: limit,
-      order: [["id", "DESC"]],
-    });
+        offset: offset,
+        limit: limit,
+        order: [["id", "DESC"]],
+      });
+    }
+
     res.status(200).json({
       response,
       page: page,
