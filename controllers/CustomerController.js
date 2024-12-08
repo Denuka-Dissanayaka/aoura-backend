@@ -139,33 +139,80 @@ const getCustomersBasedOnNetwork = async (req, res) => {
 const getCustomersBasedOnNetwork2 = async (req, res) => {
   const page = parseInt(req.query.page) || 0;
   const limit = parseInt(req.query.limit) || 8;
+  const searchByName = req.query.search_by_name || "";
   const offset = limit * page;
 
   try {
     let totalRows;
     let totalPage;
-    totalRows = await Customers.count({
-      where: {
-        networkId: req.params.networkId,
-      },
-    });
-    totalPage = Math.ceil(totalRows / limit);
+    let response;
 
-    const response = await Customers.findAll({
-      attributes: ["id", "uuid", "name", "email", "address", "phone"],
-      where: {
-        networkId: req.params.networkId,
-      },
-      include: [
-        {
-          model: Networks,
-          attributes: ["uuid", "name"],
+    if (req.role === "admin") {
+      totalRows = await Customers.count({
+        where: {
+          networkId: req.params.networkId,
         },
-      ],
-      offset: offset,
-      limit: limit,
-      order: [["id", "DESC"]],
-    });
+      });
+      totalPage = Math.ceil(totalRows / limit);
+
+      response = await Customers.findAll({
+        attributes: ["id", "uuid", "name", "email", "address", "phone"],
+        where: {
+          networkId: req.params.networkId,
+        },
+        include: [
+          {
+            model: Networks,
+            attributes: ["uuid", "name"],
+          },
+        ],
+        offset: offset,
+        limit: limit,
+        order: [["id", "DESC"]],
+      });
+    } else {
+      totalRows = await Customers.count({
+        where: {
+          [Op.and]: [
+            {
+              name: {
+                [Op.like]: "%" + searchByName + "%",
+              },
+            },
+            {
+              networkId: req.params.networkId,
+            },
+          ],
+        },
+      });
+      totalPage = Math.ceil(totalRows / limit);
+
+      response = await Customers.findAll({
+        attributes: ["id", "uuid", "name", "email", "address", "phone"],
+        where: {
+          [Op.and]: [
+            {
+              name: {
+                [Op.like]: "%" + searchByName + "%",
+              },
+            },
+            {
+              networkId: req.params.networkId,
+            },
+          ],
+        },
+        include: [
+          {
+            model: Networks,
+            attributes: ["uuid", "name"],
+          },
+        ],
+        offset: offset,
+        limit: limit,
+        order: [["id", "DESC"]],
+      });
+    }
+
     res.status(200).json({
       response,
       page: page,
