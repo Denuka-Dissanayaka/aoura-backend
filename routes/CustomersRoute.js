@@ -27,7 +27,7 @@ router.get(
   "/customers/base-on-network2/:networkId",
   verifyJWT,
   verifyUser,
-  adminOnly,
+
   getCustomersBasedOnNetwork2
 );
 router.post("/customers", verifyJWT, verifyUser, createCustomer);
