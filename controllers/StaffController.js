@@ -91,13 +91,24 @@ const getStaffById = async (req, res) => {
 const getStaffsBasedOnNetwork = async (req, res) => {
   const page = parseInt(req.query.page) || 0;
   const limit = parseInt(req.query.limit) || 8;
+  const searchByName = req.query.search_by_name || "";
   const offset = limit * page;
   try {
     let totalRows;
     let totalPage;
     totalRows = await Staffs.count({
       where: {
-        networkId: req.params.networkId,
+        [Op.and]: [
+          {
+            fristname: {
+              [Op.like]: "%" + searchByName + "%",
+            },
+          },
+          {
+            networkId: req.params.networkId,
+          },
+        ],
+        //networkId: req.params.networkId,
       },
     });
     totalPage = Math.ceil(totalRows / limit);
@@ -113,7 +124,17 @@ const getStaffsBasedOnNetwork = async (req, res) => {
         "nic",
       ],
       where: {
-        networkId: req.params.networkId,
+        [Op.and]: [
+          {
+            fristname: {
+              [Op.like]: "%" + searchByName + "%",
+            },
+          },
+          {
+            networkId: req.params.networkId,
+          },
+        ],
+        //networkId: req.params.networkId,
       },
       include: [
         {
