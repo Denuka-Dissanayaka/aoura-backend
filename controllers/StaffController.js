@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const Staffs = require("../models/StaffModule");
 const Networks = require("../models/NetworkModule");
+const { Op } = require("sequelize");
 
 function encrypt(password) {
   return bcrypt.hash(password, 10);
