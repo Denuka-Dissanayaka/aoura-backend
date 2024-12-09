@@ -86,7 +86,7 @@ const getOrdersCount = async (req, res) => {
 
 const getOrdersStatusCount = async (req, res) => {
   const status = req.query.status || "";
-  const networkId = req.query.networkId || "";
+  //const networkId = req.query.networkId || "";
   let response;
   if (req.role === "admin") {
     response = await Orders.count({
@@ -102,7 +102,7 @@ const getOrdersStatusCount = async (req, res) => {
             status: status,
           },
           {
-            networkId: networkId,
+            networkId: req.networkId,
           },
         ],
       },
