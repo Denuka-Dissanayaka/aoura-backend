@@ -68,7 +68,9 @@ const getCustomersCount = async (req, res) => {
   if (req.role === "admin") {
     response = await Customers.count();
   } else {
-    response = 0;
+    response = await Customers.count({
+      where: { networkId: req.networkId },
+    });
   }
   res.status(200).json({
     response,

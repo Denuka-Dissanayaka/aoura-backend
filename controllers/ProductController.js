@@ -63,7 +63,9 @@ const getProductsCount = async (req, res) => {
   if (req.role === "admin") {
     response = await Products.count();
   } else {
-    response = 0;
+    response = await Products.count({
+      where: { networkId: req.networkId },
+    });
   }
   res.status(200).json({
     response,
