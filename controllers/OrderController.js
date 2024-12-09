@@ -84,6 +84,35 @@ const getOrdersCount = async (req, res) => {
   });
 };
 
+const getOrdersStatusCount = async (req, res) => {
+  const status = req.query.status || "";
+  const networkId = req.query.networkId || "";
+  let response;
+  if (req.role === "admin") {
+    response = await Orders.count({
+      where: {
+        status: status,
+      },
+    });
+  } else {
+    response = await Orders.count({
+      where: {
+        [Op.and]: [
+          {
+            status: status,
+          },
+          {
+            networkId: networkId,
+          },
+        ],
+      },
+    });
+  }
+  res.status(200).json({
+    count: response,
+  });
+};
+
 const getOrderById = async (req, res) => {
   try {
     const order = await Orders.findOne({
@@ -288,4 +317,5 @@ module.exports = {
   updateOrder,
   deleteOrder,
   getOrdersCount,
+  getOrdersStatusCount,
 };
