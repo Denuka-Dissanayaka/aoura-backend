@@ -226,7 +226,7 @@ const getOrdersBasedOnNetwork2 = async (req, res) => {
     let response;
 
     if (req.role === "admin") {
-      totalRows = await Products.count({
+      totalRows = await Orders.count({
         where: {
           [Op.and]: [
             {
@@ -273,7 +273,7 @@ const getOrdersBasedOnNetwork2 = async (req, res) => {
         ],
       });
     } else {
-      totalRows = await Products.count({
+      totalRows = await Orders.count({
         where: {
           [Op.and]: [
             {
