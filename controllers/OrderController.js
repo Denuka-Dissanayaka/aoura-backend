@@ -124,6 +124,25 @@ const getOrdersStatusCount = async (req, res) => {
   });
 };
 
+const getOrdersCountBaseOnNetwork = async (req, res) => {
+  const networkId = req.query.networkId || "";
+  //const networkId = req.query.networkId || "";
+  let response;
+  try {
+    response = await Orders.count({
+      where: {
+        networkId: networkId,
+      },
+    });
+
+    res.status(200).json({
+      count: response,
+    });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
+
 const getOrderById = async (req, res) => {
   try {
     const order = await Orders.findOne({
@@ -443,6 +462,7 @@ module.exports = {
   getOrderById,
   getOrdersBasedOnNetwork,
   getOrdersBasedOnNetwork2,
+  getOrdersCountBaseOnNetwork,
   createOrder,
   updateOrder,
   deleteOrder,

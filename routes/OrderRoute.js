@@ -4,6 +4,7 @@ const {
   getOrderById,
   getOrdersBasedOnNetwork,
   getOrdersBasedOnNetwork2,
+  getOrdersCountBaseOnNetwork,
   createOrder,
   updateOrder,
   deleteOrder,
@@ -18,6 +19,12 @@ const router = express.Router();
 router.get("/orders", verifyJWT, verifyUser, getOrders);
 router.get("/orders/count", verifyJWT, verifyUser, getOrdersCount);
 router.get("/orders/status-count", verifyJWT, verifyUser, getOrdersStatusCount);
+router.get(
+  "/orders/orders-count-basedon-network",
+  verifyJWT,
+  verifyUser,
+  getOrdersCountBaseOnNetwork
+);
 router.get("/orders/:id", verifyJWT, verifyUser, getOrderById);
 router.get(
   "/orders/base-on-network/:networkId",
