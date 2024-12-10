@@ -215,6 +215,124 @@ const getOrdersBasedOnNetwork = async (req, res) => {
   }
 };
 
+const getOrdersBasedOnNetwork2 = async (req, res) => {
+  const page = parseInt(req.query.page) || 0;
+  const limit = parseInt(req.query.limit) || 8;
+  const status = req.query.status || "";
+  const offset = limit * page;
+  try {
+    let totalRows;
+    let totalPage;
+    let response;
+
+    if (req.role === "admin") {
+      totalRows = await Products.count({
+        where: {
+          [Op.and]: [
+            {
+              status: {
+                [Op.like]: "%" + status + "%",
+              },
+            },
+            {
+              networkId: req.params.networkId,
+            },
+          ],
+          //networkId: req.params.networkId,
+        },
+      });
+      totalPage = Math.ceil(totalRows / limit);
+
+      response = await Orders.findAll({
+        attributes: ["id", "uuid", "status", "date", "quantity", "price"],
+        where: {
+          [Op.and]: [
+            {
+              status: {
+                [Op.like]: "%" + status + "%",
+              },
+            },
+            {
+              networkId: req.params.networkId,
+            },
+          ],
+        },
+        include: [
+          {
+            model: Products,
+            attributes: ["uuid", "name"],
+          },
+          {
+            model: Networks,
+            attributes: ["uuid", "name"],
+          },
+          {
+            model: Customers,
+            attributes: ["uuid", "name", "email", "address", "phone"],
+          },
+        ],
+      });
+    } else {
+      totalRows = await Products.count({
+        where: {
+          [Op.and]: [
+            {
+              status: {
+                [Op.like]: "%" + status + "%",
+              },
+            },
+            {
+              networkId: req.networkId,
+            },
+          ],
+          //networkId: req.params.networkId,
+        },
+      });
+      totalPage = Math.ceil(totalRows / limit);
+
+      response = await Orders.findAll({
+        attributes: ["id", "uuid", "status", "date", "quantity", "price"],
+        where: {
+          [Op.and]: [
+            {
+              status: {
+                [Op.like]: "%" + status + "%",
+              },
+            },
+            {
+              networkId: req.networkId,
+            },
+          ],
+        },
+        include: [
+          {
+            model: Products,
+            attributes: ["uuid", "name"],
+          },
+          {
+            model: Networks,
+            attributes: ["uuid", "name"],
+          },
+          {
+            model: Customers,
+            attributes: ["uuid", "name", "email", "address", "phone"],
+          },
+        ],
+      });
+    }
+
+    res.status(200).json({
+      response,
+      page: page,
+      limit: limit,
+      totalRows: totalRows,
+      totalPage: totalPage,
+    });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
+
 const createOrder = async (req, res) => {
   const { price, quantity, date, productId, customerId, networkId } = req.body;
 
@@ -315,6 +433,7 @@ module.exports = {
   getOrders,
   getOrderById,
   getOrdersBasedOnNetwork,
+  getOrdersBasedOnNetwork2,
   createOrder,
   updateOrder,
   deleteOrder,

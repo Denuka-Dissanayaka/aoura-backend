@@ -3,6 +3,7 @@ const {
   getOrders,
   getOrderById,
   getOrdersBasedOnNetwork,
+  getOrdersBasedOnNetwork2,
   createOrder,
   updateOrder,
   deleteOrder,
@@ -23,6 +24,12 @@ router.get(
   verifyJWT,
   verifyUser,
   getOrdersBasedOnNetwork
+);
+router.get(
+  "/orders/base-on-network2/:networkId",
+  verifyJWT,
+  verifyUser,
+  getOrdersBasedOnNetwork2
 );
 router.post("/orders", verifyJWT, verifyUser, createOrder);
 router.patch("/orders/:id", verifyJWT, verifyUser, updateOrder);
