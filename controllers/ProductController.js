@@ -33,6 +33,12 @@ const getProducts = async (req, res) => {
         order: [["id", "DESC"]],
       });
     } else {
+      totalRows = await Products.count({
+        where: {
+          networkId: req.networkId,
+        },
+      });
+      totalPage = Math.ceil(totalRows / limit);
       response = await Products.findAll({
         attributes: ["uuid", "name", "quantity", "price", "type", "id"],
         where: {
@@ -44,6 +50,9 @@ const getProducts = async (req, res) => {
             attributes: ["fristname", "lastname"],
           },
         ],
+        offset: offset,
+        limit: limit,
+        order: [["id", "DESC"]],
       });
     }
     res.status(200).json({
