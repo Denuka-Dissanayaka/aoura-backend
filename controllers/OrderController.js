@@ -39,6 +39,12 @@ const getOrders = async (req, res) => {
         order: [["id", "DESC"]],
       });
     } else {
+      totalRows = await Orders.count({
+        where: {
+          networkId: req.networkId,
+        },
+      });
+      totalPage = Math.ceil(totalRows / limit);
       response = await Orders.findAll({
         attributes: ["id", "uuid", "status", "date", "quantity", "price"],
         where: {
@@ -58,6 +64,9 @@ const getOrders = async (req, res) => {
             attributes: ["uuid", "name", "email", "address", "phone"],
           },
         ],
+        offset: offset,
+        limit: limit,
+        order: [["id", "DESC"]],
       });
     }
     res.status(200).json({
