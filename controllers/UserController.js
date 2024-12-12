@@ -58,6 +58,7 @@ const getUserById = async (req, res) => {
         "username",
         "networkId",
         "role",
+        "createdAt",
       ],
       include: [
         {
