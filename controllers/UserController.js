@@ -92,7 +92,7 @@ const getUsersBasedOnNetwork = async (req, res) => {
       where: {
         [Op.and]: [
           {
-            status: {
+            role: {
               [Op.like]: "%" + role + "%",
             },
           },
