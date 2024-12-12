@@ -92,7 +92,7 @@ const getProductById = async (req, res) => {
     let response;
     if (req.role === "admin") {
       response = await Products.findOne({
-        attributes: ["uuid", "name", "quantity", "price", "type"],
+        attributes: ["uuid", "name", "quantity", "price", "type", "createdAt"],
         where: {
           id: product.id,
         },
@@ -109,7 +109,7 @@ const getProductById = async (req, res) => {
       });
     } else {
       response = await Products.findOne({
-        attributes: ["uuid", "name", "quantity", "price", "type"],
+        attributes: ["uuid", "name", "quantity", "price", "type", "createdAt"],
         where: {
           [Op.and]: [{ id: product.id }, { networkId: req.networkId }],
         },
