@@ -195,8 +195,8 @@ const updateStaff = async (req, res) => {
   try {
     await Staffs.update(
       {
-        fristName: fristName,
-        lastName: lastName,
+        fristname: fristName,
+        lastname: lastName,
         gender: gender,
         nic: nic,
       },
