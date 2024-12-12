@@ -168,7 +168,7 @@ const getOrderById = async (req, res) => {
         include: [
           {
             model: Products,
-            attributes: ["uuid", "name"],
+            attributes: ["uuid", "name", "price"],
           },
           {
             model: Networks,
