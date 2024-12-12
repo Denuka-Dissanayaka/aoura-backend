@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const Users = require("../models/UsersModel");
 const Networks = require("../models/NetworkModule");
+const { Op } = require("sequelize");
 
 function encrypt(password) {
   return bcrypt.hash(password, 10);
@@ -77,6 +78,7 @@ const getUserById = async (req, res) => {
 };
 
 const getUsersBasedOnNetwork = async (req, res) => {
+  const role = req.query.role || "";
   try {
     const response = await Users.findAll({
       attributes: [
@@ -88,7 +90,17 @@ const getUsersBasedOnNetwork = async (req, res) => {
         "role",
       ],
       where: {
-        networkId: req.params.networkId,
+        [Op.and]: [
+          {
+            status: {
+              [Op.like]: "%" + role + "%",
+            },
+          },
+          {
+            networkId: req.params.networkId,
+          },
+        ],
+        //networkId: req.params.networkId,
       },
       include: [
         {
