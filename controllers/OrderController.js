@@ -371,7 +371,7 @@ const createOrder = async (req, res) => {
         quantity: quantity,
         date: date,
         productId: productId,
-        customerId: customerId,
+        customerId: customerId ? customerId : 0,
         networkId: networkId,
       });
       res.status(201).json({ msg: "Order Created Successfuly" });

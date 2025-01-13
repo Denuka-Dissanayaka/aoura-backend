@@ -24,9 +24,9 @@ const store = new sessionStore({
   db: db,
 });
 
-(async () => {
-  await db.sync();
-})();
+// (async () => {
+//   await db.sync();
+// })();
 
 require("dotenv").config();
 app.use(bodyParser.urlencoded({ extended: true }));
