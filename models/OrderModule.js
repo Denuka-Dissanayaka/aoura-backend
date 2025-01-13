@@ -64,9 +64,9 @@ const Orders = db.define(
     customerId: {
       type: DataTypes.INTEGER,
 
-      allowNull: false,
+      allowNull: true,
       validate: {
-        notEmpty: true,
+        notEmpty: false,
       },
     },
   },
