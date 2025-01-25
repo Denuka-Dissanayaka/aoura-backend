@@ -362,7 +362,17 @@ const getOrdersBasedOnNetwork2 = async (req, res) => {
 };
 
 const createOrder = async (req, res) => {
-  const { price, quantity, date, productId, customerId, networkId } = req.body;
+  const {
+    price,
+    quantity,
+    date,
+    productId,
+    customerId,
+    networkId,
+    tempCustomerName,
+    tempCustomerEmail,
+    tempCustomerPhone,
+  } = req.body;
 
   try {
     if (req.role === "admin") {
@@ -371,8 +381,11 @@ const createOrder = async (req, res) => {
         quantity: quantity,
         date: date,
         productId: productId,
-        customerId: customerId ? customerId : 0,
+        customerId: customerId,
         networkId: networkId,
+        tempCustomerName: tempCustomerName,
+        tempCustomerEmail: tempCustomerEmail,
+        tempCustomerPhone: tempCustomerPhone,
       });
       res.status(201).json({ msg: "Order Created Successfuly" });
     } else {
@@ -383,6 +396,9 @@ const createOrder = async (req, res) => {
         productId: productId,
         customerId: customerId,
         networkId: req.networkId,
+        tempCustomerName: tempCustomerName,
+        tempCustomerEmail: tempCustomerEmail,
+        tempCustomerPhone: tempCustomerPhone,
       });
       res.status(201).json({ msg: "Order Created Successfuly" });
     }

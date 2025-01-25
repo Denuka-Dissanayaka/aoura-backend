@@ -64,10 +64,23 @@ const Orders = db.define(
     customerId: {
       type: DataTypes.INTEGER,
 
-      allowNull: true,
+      allowNull: false,
       validate: {
-        notEmpty: false,
+        notEmpty: true,
       },
+    },
+
+    tempCustomerName: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    tempCustomerEmail: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    tempCustomerPhone: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
   },
   {
