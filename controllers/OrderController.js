@@ -19,7 +19,17 @@ const getOrders = async (req, res) => {
       totalPage = Math.ceil(totalRows / limit);
 
       response = await Orders.findAll({
-        attributes: ["id", "uuid", "status", "date", "quantity", "price"],
+        attributes: [
+          "id",
+          "uuid",
+          "status",
+          "date",
+          "quantity",
+          "price",
+          "tempCustomerName",
+          "tempCustomerEmail",
+          "tempCustomerPhone",
+        ],
         include: [
           {
             model: Products,
@@ -46,7 +56,17 @@ const getOrders = async (req, res) => {
       });
       totalPage = Math.ceil(totalRows / limit);
       response = await Orders.findAll({
-        attributes: ["id", "uuid", "status", "date", "quantity", "price"],
+        attributes: [
+          "id",
+          "uuid",
+          "status",
+          "date",
+          "quantity",
+          "price",
+          "tempCustomerName",
+          "tempCustomerEmail",
+          "tempCustomerPhone",
+        ],
         where: {
           networkId: req.networkId,
         },
