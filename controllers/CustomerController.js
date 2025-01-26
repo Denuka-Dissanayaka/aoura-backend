@@ -94,9 +94,9 @@ const getChequeData = async (req, res) => {
           "ChequeGivenDate",
           "ChequeDueDate",
         ],
-        where: {
-          isChequePayment: "yes",
-        },
+        // where: {
+        //   isChequePayment: "yes",
+        // },
       });
     }
     res.status(200).json({
