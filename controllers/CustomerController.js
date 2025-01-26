@@ -228,7 +228,22 @@ const getCustomersBasedOnNetwork2 = async (req, res) => {
 };
 
 const createCustomer = async (req, res) => {
-  const { name, email, address, phone, networkId } = req.body;
+  const {
+    name,
+    email,
+    address,
+    phone,
+    networkId,
+    loanAmount,
+    paidloanAmount,
+    isChequePayment,
+    ChequeBalance,
+    ChequeGivenDate,
+    ChequeDueDate,
+    bankDeposit,
+    bankName,
+    depositAmount,
+  } = req.body;
   try {
     if (req.role === "admin") {
       await Customers.create({
@@ -236,8 +251,16 @@ const createCustomer = async (req, res) => {
         email: email,
         address: address,
         phone: phone,
-
         networkId: networkId,
+        loanAmount,
+        paidloanAmount,
+        isChequePayment,
+        ChequeBalance,
+        ChequeGivenDate,
+        ChequeDueDate,
+        bankDeposit,
+        bankName,
+        depositAmount,
       });
       res.status(201).json({ msg: "Customer Added Successfuly" });
     } else {
@@ -246,8 +269,16 @@ const createCustomer = async (req, res) => {
         email: email,
         address: address,
         phone: phone,
-
         networkId: req.networkId,
+        loanAmount,
+        paidloanAmount,
+        isChequePayment,
+        ChequeBalance,
+        ChequeGivenDate,
+        ChequeDueDate,
+        bankDeposit,
+        bankName,
+        depositAmount,
       });
       res.status(201).json({ msg: "Customer Added Successfuly" });
     }

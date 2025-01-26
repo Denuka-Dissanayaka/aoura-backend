@@ -52,6 +52,43 @@ const Customers = db.define(
         notEmpty: true,
       },
     },
+
+    loanAmount: {
+      type: DataTypes.FLOAT,
+      allowNull: true,
+    },
+    paidloanAmount: {
+      type: DataTypes.FLOAT,
+      allowNull: true,
+    },
+    isChequePayment: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    ChequeBalance: {
+      type: DataTypes.FLOAT,
+      allowNull: true,
+    },
+    ChequeGivenDate: {
+      type: DataTypes.DATEONLY,
+      allowNull: true,
+    },
+    ChequeDueDate: {
+      type: DataTypes.DATEONLY,
+      allowNull: true,
+    },
+    bankDeposit: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    bankName: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    depositAmount: {
+      type: DataTypes.FLOAT,
+      allowNull: true,
+    },
   },
   {
     freezeTableName: true,
