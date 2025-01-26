@@ -84,21 +84,20 @@ const getCustomers = async (req, res) => {
 const getChequeData = async (req, res) => {
   let response;
   try {
-    if (req.role === "admin") {
-      response = await Customers.findAll({
-        attributes: [
-          "id",
-          "uuid",
-          "name",
-          "ChequeBalance",
-          "ChequeGivenDate",
-          "ChequeDueDate",
-        ],
-        // where: {
-        //   isChequePayment: "yes",
-        // },
-      });
-    }
+    response = await Customers.findAll({
+      attributes: [
+        "id",
+        "uuid",
+        "name",
+        "ChequeBalance",
+        "ChequeGivenDate",
+        "ChequeDueDate",
+      ],
+      // where: {
+      //   isChequePayment: "yes",
+      // },
+    });
+
     res.status(200).json({
       response,
     });
