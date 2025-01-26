@@ -81,6 +81,32 @@ const getCustomers = async (req, res) => {
   }
 };
 
+const getChequeData = async (req, res) => {
+  let response;
+  try {
+    if (req.role === "admin") {
+      response = await Customers.findAll({
+        attributes: [
+          "id",
+          "uuid",
+          "name",
+          "ChequeBalance",
+          "ChequeGivenDate",
+          "ChequeDueDate",
+        ],
+        where: {
+          isChequePayment: "yes",
+        },
+      });
+    }
+    res.status(200).json({
+      response,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const getCustomersCount = async (req, res) => {
   let response;
   if (req.role === "admin") {
@@ -439,4 +465,5 @@ module.exports = {
   getCustomersBasedOnNetwork,
   getCustomersBasedOnNetwork2,
   getCustomersCount,
+  getChequeData,
 };
