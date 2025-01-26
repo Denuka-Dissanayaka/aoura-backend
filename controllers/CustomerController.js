@@ -19,7 +19,16 @@ const getCustomers = async (req, res) => {
       totalPage = Math.ceil(totalRows / limit);
 
       response = await Customers.findAll({
-        attributes: ["id", "uuid", "name", "email", "address", "phone"],
+        attributes: [
+          "id",
+          "uuid",
+          "name",
+          "email",
+          "address",
+          "phone",
+          "loanAmount",
+          "paidloanAmount",
+        ],
         include: [
           {
             model: Networks,
@@ -39,7 +48,16 @@ const getCustomers = async (req, res) => {
       totalPage = Math.ceil(totalRows / limit);
 
       response = await Customers.findAll({
-        attributes: ["id", "uuid", "name", "email", "address", "phone"],
+        attributes: [
+          "id",
+          "uuid",
+          "name",
+          "email",
+          "address",
+          "phone",
+          "loanAmount",
+          "paidloanAmount",
+        ],
         where: {
           networkId: req.networkId,
         },
@@ -88,7 +106,23 @@ const getCustomerById = async (req, res) => {
     let response;
     if (req.role === "admin") {
       response = await Customers.findOne({
-        attributes: ["uuid", "name", "email", "address", "phone", "createdAt"],
+        attributes: [
+          "uuid",
+          "name",
+          "email",
+          "address",
+          "phone",
+          "loanAmount",
+          "paidloanAmount",
+          "isChequePayment",
+          "ChequeBalance",
+          "ChequeGivenDate",
+          "ChequeDueDate",
+          "bankDeposit",
+          "bankName",
+          "depositAmount",
+          "createdAt",
+        ],
         where: {
           id: customer.id,
         },
@@ -101,7 +135,23 @@ const getCustomerById = async (req, res) => {
       });
     } else {
       response = await Customers.findOne({
-        attributes: ["uuid", "name", "email", "address", "phone", "createdAt"],
+        attributes: [
+          "uuid",
+          "name",
+          "email",
+          "address",
+          "phone",
+          "loanAmount",
+          "paidloanAmount",
+          "isChequePayment",
+          "ChequeBalance",
+          "ChequeGivenDate",
+          "ChequeDueDate",
+          "bankDeposit",
+          "bankName",
+          "depositAmount",
+          "createdAt",
+        ],
         where: {
           [Op.and]: [{ id: customer.id }, { networkId: req.networkId }],
         },
@@ -122,7 +172,16 @@ const getCustomerById = async (req, res) => {
 const getCustomersBasedOnNetwork = async (req, res) => {
   try {
     const response = await Customers.findAll({
-      attributes: ["id", "uuid", "name", "email", "address", "phone"],
+      attributes: [
+        "id",
+        "uuid",
+        "name",
+        "email",
+        "address",
+        "phone",
+        "loanAmount",
+        "paidloanAmount",
+      ],
       where: {
         networkId: req.params.networkId,
       },
@@ -158,7 +217,16 @@ const getCustomersBasedOnNetwork2 = async (req, res) => {
       totalPage = Math.ceil(totalRows / limit);
 
       response = await Customers.findAll({
-        attributes: ["id", "uuid", "name", "email", "address", "phone"],
+        attributes: [
+          "id",
+          "uuid",
+          "name",
+          "email",
+          "address",
+          "phone",
+          "loanAmount",
+          "paidloanAmount",
+        ],
         where: {
           networkId: req.params.networkId,
         },
@@ -190,7 +258,16 @@ const getCustomersBasedOnNetwork2 = async (req, res) => {
       totalPage = Math.ceil(totalRows / limit);
 
       response = await Customers.findAll({
-        attributes: ["id", "uuid", "name", "email", "address", "phone"],
+        attributes: [
+          "id",
+          "uuid",
+          "name",
+          "email",
+          "address",
+          "phone",
+          "loanAmount",
+          "paidloanAmount",
+        ],
         where: {
           [Op.and]: [
             {
