@@ -26,6 +26,8 @@ const getOrders = async (req, res) => {
           "date",
           "quantity",
           "price",
+          "trackingNumber",
+          "productType",
           "tempCustomerName",
           "tempCustomerEmail",
           "tempCustomerPhone",
@@ -63,6 +65,8 @@ const getOrders = async (req, res) => {
           "date",
           "quantity",
           "price",
+          "trackingNumber",
+          "productType",
           "tempCustomerName",
           "tempCustomerEmail",
           "tempCustomerPhone",
@@ -180,6 +184,11 @@ const getOrderById = async (req, res) => {
           "date",
           "quantity",
           "price",
+          "trackingNumber",
+          "productType",
+          "tempCustomerName",
+          "tempCustomerEmail",
+          "tempCustomerPhone",
           "createdAt",
         ],
         where: {
@@ -208,6 +217,11 @@ const getOrderById = async (req, res) => {
           "date",
           "quantity",
           "price",
+          "trackingNumber",
+          "productType",
+          "tempCustomerName",
+          "tempCustomerEmail",
+          "tempCustomerPhone",
           "createdAt",
         ],
         where: {
@@ -238,7 +252,18 @@ const getOrderById = async (req, res) => {
 const getOrdersBasedOnNetwork = async (req, res) => {
   try {
     const response = await Orders.findAll({
-      attributes: ["uuid", "status", "date", "quantity", "price"],
+      attributes: [
+        "uuid",
+        "status",
+        "date",
+        "quantity",
+        "price",
+        "trackingNumber",
+        "productType",
+        "tempCustomerName",
+        "tempCustomerEmail",
+        "tempCustomerPhone",
+      ],
       where: {
         networkId: req.params.networkId,
       },
@@ -292,7 +317,19 @@ const getOrdersBasedOnNetwork2 = async (req, res) => {
       totalPage = Math.ceil(totalRows / limit);
 
       response = await Orders.findAll({
-        attributes: ["id", "uuid", "status", "date", "quantity", "price"],
+        attributes: [
+          "id",
+          "uuid",
+          "status",
+          "date",
+          "quantity",
+          "price",
+          "trackingNumber",
+          "productType",
+          "tempCustomerName",
+          "tempCustomerEmail",
+          "tempCustomerPhone",
+        ],
         where: {
           [Op.and]: [
             {
@@ -339,7 +376,19 @@ const getOrdersBasedOnNetwork2 = async (req, res) => {
       totalPage = Math.ceil(totalRows / limit);
 
       response = await Orders.findAll({
-        attributes: ["id", "uuid", "status", "date", "quantity", "price"],
+        attributes: [
+          "id",
+          "uuid",
+          "status",
+          "date",
+          "quantity",
+          "price",
+          "trackingNumber",
+          "productType",
+          "tempCustomerName",
+          "tempCustomerEmail",
+          "tempCustomerPhone",
+        ],
         where: {
           [Op.and]: [
             {
@@ -389,6 +438,8 @@ const createOrder = async (req, res) => {
     productId,
     customerId,
     networkId,
+    productType,
+    trackingNumber,
     tempCustomerName,
     tempCustomerEmail,
     tempCustomerPhone,
@@ -403,6 +454,8 @@ const createOrder = async (req, res) => {
         productId: productId,
         customerId: customerId,
         networkId: networkId,
+        trackingNumber: trackingNumber,
+        productType: productType,
         tempCustomerName: tempCustomerName,
         tempCustomerEmail: tempCustomerEmail,
         tempCustomerPhone: tempCustomerPhone,
@@ -416,6 +469,8 @@ const createOrder = async (req, res) => {
         productId: productId,
         customerId: customerId,
         networkId: req.networkId,
+        trackingNumber: trackingNumber,
+        productType: productType,
         tempCustomerName: tempCustomerName,
         tempCustomerEmail: tempCustomerEmail,
         tempCustomerPhone: tempCustomerPhone,

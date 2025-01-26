@@ -82,6 +82,14 @@ const Orders = db.define(
       type: DataTypes.STRING,
       allowNull: true,
     },
+    productType: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    trackingNumber: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
   },
   {
     freezeTableName: true,
