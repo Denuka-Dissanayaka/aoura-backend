@@ -89,9 +89,11 @@ const getChequeData = async (req, res) => {
         "id",
         "uuid",
         "name",
-        "ChequeBalance",
-        "ChequeGivenDate",
-        "ChequeDueDate",
+        "email",
+        "address",
+        "phone",
+        "loanAmount",
+        "paidloanAmount",
       ],
       // where: {
       //   isChequePayment: "yes",
@@ -102,7 +104,7 @@ const getChequeData = async (req, res) => {
       response,
     });
   } catch (err) {
-    console.log(err);
+    res.status(500).json({ msg: err.message });
   }
 };
 
