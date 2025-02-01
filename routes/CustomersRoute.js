@@ -31,7 +31,7 @@ router.get(
 
   getCustomersBasedOnNetwork2
 );
-router.get("/customers/cheque", verifyJWT, verifyUser, getChequeData);
+router.get("/customers/chequedata", verifyJWT, verifyUser, getChequeData);
 router.post("/customers", verifyJWT, verifyUser, createCustomer);
 router.patch("/customers/:id", verifyJWT, verifyUser, updateCustomer);
 router.delete("/customers/:id", verifyJWT, verifyUser, deleteCustomer);
