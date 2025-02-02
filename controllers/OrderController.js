@@ -445,9 +445,11 @@ const createOrder = async (req, res) => {
     tempCustomerPhone,
   } = req.body;
 
+  let response;
+
   try {
     if (req.role === "admin") {
-      await Orders.create({
+      response = await Orders.create({
         price: price,
         quantity: quantity,
         date: date,
@@ -460,9 +462,12 @@ const createOrder = async (req, res) => {
         tempCustomerEmail: tempCustomerEmail,
         tempCustomerPhone: tempCustomerPhone,
       });
-      res.status(201).json({ msg: "Order Created Successfuly" });
+      res.status(201).json({
+        msg: "Order Created Successfuly",
+        result: response,
+      });
     } else {
-      await Orders.create({
+      response = await Orders.create({
         price: price,
         quantity: quantity,
         date: date,
@@ -475,7 +480,10 @@ const createOrder = async (req, res) => {
         tempCustomerEmail: tempCustomerEmail,
         tempCustomerPhone: tempCustomerPhone,
       });
-      res.status(201).json({ msg: "Order Created Successfuly" });
+      res.status(201).json({
+        msg: "Order Created Successfuly",
+        result: response,
+      });
     }
   } catch (error) {
     res.status(500).json({ msg: error.message });
