@@ -17,6 +17,8 @@ const CustomerRoutes = require("./routes/CustomersRoute");
 const OrderRoutes = require("./routes/OrderRoute");
 const ExpenseRoutes = require("./routes/ExpenseRoute");
 const CashbookRoute = require("./routes/CashbookRoute");
+const SupplierRoute = require("./routes/SupplierRoute");
+const IngredientRoute = require("./routes/IngredientRoute");
 
 const app = express();
 
@@ -67,6 +69,8 @@ app.use("/api/v1", CustomerRoutes);
 app.use("/api/v1", OrderRoutes);
 app.use("/api/v1", ExpenseRoutes);
 app.use("/api/v1", CashbookRoute);
+app.use("/api/v1", SupplierRoute);
+app.use("/api/v1", IngredientRoute);
 
 //store.sync();
 
