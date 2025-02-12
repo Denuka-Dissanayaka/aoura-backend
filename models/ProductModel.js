@@ -32,6 +32,12 @@ const Products = db.define(
         notEmpty: true,
       },
     },
+    image: {
+      type: DataTypes.STRING,
+    },
+    url: {
+      type: DataTypes.STRING,
+    },
     quantity: {
       type: DataTypes.INTEGER,
       allowNull: true,

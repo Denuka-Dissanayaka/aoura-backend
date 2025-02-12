@@ -1,3 +1,5 @@
+import path from "path";
+import fs from "fs";
 const Products = require("../models/ProductModel");
 const Users = require("../models/UsersModel");
 const Networks = require("../models/NetworkModule");
@@ -311,16 +313,51 @@ const getProductsBasedOnNetwork2 = async (req, res) => {
 
 const createProduct = async (req, res) => {
   const { name, price, quantity, networkId, type } = req.body;
+  let file;
+  let fileSize;
+  let ext;
+  let fileName;
+  let url;
+  const allowedType = [".png", ".jpg", ".jpeg"];
   try {
     if (req.role === "admin") {
-      await Products.create({
-        name: name,
-        price: price,
-        quantity: quantity,
-        type: type,
-        userId: req.userId,
-        networkId: networkId,
-      });
+      if (req.files !== null && type === "product") {
+        file = req.files.file;
+        fileSize = file.data.length;
+        ext = path.extname(file.name);
+        fileName = file.md5 + ext;
+        url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
+
+        if (!allowedType.includes(ext.toLowerCase()))
+          return res.status(422).json({ msg: "Invalid Images" });
+        if (fileSize > 5000000)
+          return res.status(422).json({ msg: "Image must be less than 5 MB" });
+
+        file.mv(`./public/images/${fileName}`, async (err) => {
+          if (err) return res.status(500).json({ msg: err.message });
+
+          await Products.create({
+            name: name,
+            price: price,
+            quantity: quantity,
+            type: type,
+            userId: req.userId,
+            networkId: networkId,
+            image: fileName,
+            url: url,
+          });
+        });
+      } else {
+        await Products.create({
+          name: name,
+          price: price,
+          quantity: quantity,
+          type: type,
+          userId: req.userId,
+          networkId: networkId,
+        });
+      }
+
       res.status(201).json({ msg: "Product or Package Created Successfuly" });
     } else {
       await Products.create({

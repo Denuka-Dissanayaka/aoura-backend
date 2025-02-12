@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const SequelizeStore = require("connect-session-sequelize");
+import FileUpload from "express-fileupload";
 
 const db = require("./config/Database");
 
@@ -33,14 +34,15 @@ require("dotenv").config();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: "https://aoura-demo.netlify.app",
-    //origin: "http://localhost:5173",
+    //origin: "https://aoura-demo.netlify.app",
+    origin: "http://localhost:5173",
     //methods: ["POST", "GET"],
     credentials: true,
   })
 );
 app.use(express.json());
-
+app.use(FileUpload());
+app.use(express.static("public"));
 app.use(cookieParser());
 app.use(
   session({
