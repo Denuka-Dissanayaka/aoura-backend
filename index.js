@@ -4,8 +4,8 @@ const bodyParser = require("body-parser");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const SequelizeStore = require("connect-session-sequelize");
-import FileUpload from "express-fileupload";
-
+//import FileUpload from "express-fileupload";
+const FileUpload = require("express-fileupload");
 const db = require("./config/Database");
 
 const ProductRoutes = require("./routes/ProductRoute");
