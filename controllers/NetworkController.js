@@ -5,6 +5,9 @@ const getNetworks = async (req, res) => {
   try {
     const response = await Networks.findAll({
       attributes: ["id", "uuid", "name"],
+      where: {
+        status: "active",
+      },
     });
     res.status(200).json(response);
   } catch (err) {
@@ -22,6 +25,7 @@ const getNetworks2 = async (req, res) => {
     let totalPage;
     totalRows = await Networks.count({
       where: {
+        status: "active",
         [Op.or]: [
           {
             name: {
