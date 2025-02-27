@@ -40,6 +40,7 @@ const getNetworks2 = async (req, res) => {
     const response = await Networks.findAll({
       attributes: ["id", "uuid", "name"],
       where: {
+        status: "active",
         [Op.or]: [
           {
             name: {
