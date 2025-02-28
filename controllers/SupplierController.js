@@ -70,6 +70,7 @@ const getSupplierById = async (req, res) => {
         "balance",
         "paymentMethod",
         "bankName",
+        "createdAt",
       ],
 
       where: {
