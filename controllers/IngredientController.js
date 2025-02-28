@@ -46,7 +46,7 @@ const getIngredients = async (req, res) => {
 const getIngredientById = async (req, res) => {
   try {
     const response = await Ingredients.findOne({
-      attributes: ["id", "uuid", "name", "quantity", "status"],
+      attributes: ["id", "uuid", "name", "quantity", "status", "createdAt"],
 
       where: {
         uuid: req.params.id,
