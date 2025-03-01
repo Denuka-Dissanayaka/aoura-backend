@@ -341,9 +341,9 @@ const createProduct = async (req, res) => {
     if (req.role === "admin") {
       if (req.files !== null && type === "product") {
         file = req.files.file;
-        fileSize = file.data.length;
-        ext = path.extname(file.name);
-        fileName = file.md5 + ext;
+        fileSize = file?.data.length;
+        ext = path.extname(file?.name);
+        fileName = file?.md5 + ext;
         url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
 
         if (!allowedType.includes(ext.toLowerCase()))
