@@ -96,7 +96,15 @@ const getProductById = async (req, res) => {
     let response;
     if (req.role === "admin") {
       response = await Products.findOne({
-        attributes: ["uuid", "name", "quantity", "price", "type", "createdAt"],
+        attributes: [
+          "uuid",
+          "name",
+          "quantity",
+          "price",
+          "cost",
+          "type",
+          "createdAt",
+        ],
         where: {
           id: product.id,
         },
@@ -113,7 +121,15 @@ const getProductById = async (req, res) => {
       });
     } else {
       response = await Products.findOne({
-        attributes: ["uuid", "name", "quantity", "price", "type", "createdAt"],
+        attributes: [
+          "uuid",
+          "name",
+          "quantity",
+          "price",
+          "cost",
+          "type",
+          "createdAt",
+        ],
         where: {
           [Op.and]: [{ id: product.id }, { networkId: req.networkId }],
         },
@@ -314,7 +330,7 @@ const getProductsBasedOnNetwork2 = async (req, res) => {
 };
 
 const createProduct = async (req, res) => {
-  const { name, price, quantity, networkId, type } = req.body;
+  const { name, price, quantity, networkId, type, cost } = req.body;
   let file;
   let fileSize;
   let ext;
@@ -341,6 +357,7 @@ const createProduct = async (req, res) => {
           await Products.create({
             name: name,
             price: price,
+            cost: cost,
             quantity: quantity,
             type: type,
             userId: req.userId,
@@ -353,6 +370,7 @@ const createProduct = async (req, res) => {
         await Products.create({
           name: name,
           price: price,
+          cost: cost,
           quantity: quantity,
           type: type,
           userId: req.userId,
@@ -365,6 +383,7 @@ const createProduct = async (req, res) => {
       await Products.create({
         name: name,
         price: price,
+        cost: cost,
         quantity: quantity,
         type: type,
         userId: req.userId,
